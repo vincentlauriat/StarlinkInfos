@@ -27,19 +27,6 @@ struct SettingsView: View {
                 .labelsHidden()
             }
 
-            // Exemple de secret stocké dans le Keychain. Adapte ou supprime.
-            Section(settings.t("settings_apikey")) {
-                SecureField(settings.t("apikey_placeholder"), text: $settings.apiKey)
-                Text(settings.apiKeyConfigured
-                     ? settings.t("apikey_present")
-                     : settings.t("apikey_absent"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text(settings.t("apikey_help"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
             Section(settings.t("settings_about")) {
                 Text(settings.t("settings_about_text"))
                     .font(.callout)

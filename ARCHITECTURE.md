@@ -1,59 +1,108 @@
 # Architecture
 
-Application SwiftUI **à codebase unique partagé** entre deux cibles (macOS + iOS/iPadOS). Les différences de plateforme sont gérées par des blocs `#if os(macOS)` / `#if os(iOS)`, jamais par duplication de fichiers.
+StarlinkInfos is a **shared-codebase SwiftUI app** (macOS 15+ / iOS 18+, two targets in
+`project.yml`) that monitors and manages a Starlink internet connection, with Starlink
+news and upcoming launches as secondary panes. Platform differences are handled with
+`#if os(...)` blocks, never file duplication.
 
-## Vue d'ensemble
+## Overview
 
 ```
-                    ┌─────────────────────────┐
-                    │      StarlinkInfosApp      │  @main — Scene(s)
-                    │  (WindowGroup + Settings)│
-                    └────────────┬────────────┘
-                                 │ .environment(AppSettings)
-                    ┌────────────▼────────────┐
-                    │       ContentView       │  NavigationSplitView
-                    │   sidebar  ┆   detail    │
-                    └─────┬──────┴──────┬──────┘
-                          │             │
-              ┌───────────▼──┐   ┌──────▼────────────┐
-              │ ItemListView │   │  ItemDetailView   │
-              │  (sections)  │   │  EmptySelectionV. │
-              └───────┬──────┘   └───────────────────┘
-                      │ @Bindable
-              ┌───────▼──────────┐
-              │  ItemsViewModel  │  @Observable @MainActor
-              │  items / filtered│  ← source de données (à brancher)
-              └───────┬──────────┘
-                      │
-              ┌───────▼──────┐
-              │  Item (model)│  Codable / Identifiable
-              └──────────────┘
+                       ┌──────────────────────────┐
+                       │     StarlinkInfosApp     │  @main — WindowGroup + Settings (macOS)
+                       └────────────┬─────────────┘
+                                    │ .environment(AppSettings)
+                       ┌────────────▼─────────────┐
+                       │       ContentView        │  NavigationSplitView
+                       │  sidebar   ┆   detail    │
+                       └──┬─────────┴───────┬─────┘
+              sections:   │                 │ detail per selection:
+        Connexion /       │                 │  DishDashboardView
+        Lancements /      │                 │  ArticleDetailView / LaunchDetailView
+        Actualités        │                 │
+             ┌────────────▼───┐   ┌─────────▼────────┐
+             │  FeedViewModel │   │   DishViewModel  │   @Observable @MainActor
+             │ articles+launch│   │ polling 2 s      │
+             └──┬──────────┬──┘   └────────┬─────────┘
+                │          │               │
+        ┌───────▼──┐  ┌────▼─────────┐  ┌──▼────────────────┐
+        │NewsService│ │LaunchService │  │    DishClient     │  actor
+        │Google News│ │Launch Library│  │ gRPC plaintext    │
+        │  RSS      │ │ 2 (JSON)     │  │ 192.168.100.1:9200│
+        └───────────┘ └──────────────┘  └──┬────────────────┘
+                                           │ SpaceX.API.Device.Device/Handle
+                                  ┌────────▼─────────┐
+                                  │Generated/ (protoc)│  messages + client stub
+                                  └──────────────────┘
 ```
 
-## Couches
+## The dish gRPC API
 
-| Couche | Rôle | Fichiers |
+The Starlink dish exposes a **local, unauthenticated gRPC API in cleartext HTTP/2**
+at `192.168.100.1:9200` (service `SpaceX.API.Device.Device`, single unary RPC
+`Handle(Request) → Response` with oneof payloads). It is reachable only from the
+Starlink LAN.
+
+- **Proto source of truth**: `Proto/dish.protoset`, a `FileDescriptorSet` dumped from
+  the dish itself via server reflection (`grpcurl -plaintext -protoset-out ...`).
+  Re-dump it after a firmware update if new fields are needed.
+- **Code generation** (committed under `StarlinkInfos/Generated/`, never edited by hand):
+  ```bash
+  protoc --descriptor_set_in=Proto/dish.protoset \
+    --swift_out=StarlinkInfos/Generated --swift_opt=Visibility=Internal <all .proto paths>
+  protoc --descriptor_set_in=Proto/dish.protoset \
+    --grpc-swift-2_out=StarlinkInfos/Generated spacex_api/device/device.proto
+  ```
+  Plugins: `brew install swift-protobuf grpc-swift` (`protoc-gen-swift`,
+  `protoc-gen-grpc-swift-2`).
+- **Runtime**: grpc-swift-2 + grpc-swift-nio-transport (`.http2NIOPosix`,
+  `.plaintext`, target `.ipv4(address:port:)`). This mandates **macOS 15 / iOS 18**
+  minimum deployment targets. URLSession cannot be used instead: it does not support
+  cleartext HTTP/2 (h2c).
+- **`DishClient` (actor)**: lazily opens one long-lived `GRPCClient`, runs
+  `runConnections()` in a background task, and tears down/recreates the client on any
+  call failure. All calls carry a 6 s timeout. Used RPCs: `get_status`, `get_history`
+  (15 min ring buffers at 1 Hz), `dish_get_obstruction_map`, `reboot`, `dish_stow`.
+- Proto → UI mapping lives in `DishClient.swift` extensions (`DishSnapshot(proto)`),
+  keeping generated types out of views. `DishModels.swift` holds the clean app-facing
+  structs.
+
+## Layers
+
+| Layer | Role | Files |
 |---|---|---|
-| **App** | Points d'entrée, scènes, injection de `AppSettings` | `StarlinkInfosApp.swift` |
-| **Views** | SwiftUI pur, aucune logique réseau | `Views/*.swift` |
-| **ViewModels** | État observable `@MainActor`, orchestration du chargement | `ViewModels/ItemsViewModel.swift` |
-| **Models** | Structures `Codable` de données | `Models/Item.swift` |
-| **Services** | Accès système / réseau réutilisable | `Services/Keychain.swift` |
-| **Localization** | Réglages persistés + traduction | `Localization/*.swift` |
+| **App** | Entry points, scenes, `AppSettings` injection | `StarlinkInfosApp.swift` |
+| **Views** | Pure SwiftUI | `Views/ContentView.swift`, `Views/Dashboard/*` |
+| **ViewModels** | `@Observable @MainActor` state, polling orchestration | `DishViewModel`, `FeedViewModel` |
+| **Models** | App-facing structs | `DishModels.swift`, `FeedModels.swift` |
+| **Services** | gRPC / HTTP access | `DishClient`, `NewsService`, `LaunchService` |
+| **Generated** | protoc output — regenerate, never edit | `Generated/**` |
+| **Localization** | Persisted settings + fr/en string table | `Localization/*.swift` |
 
-## Décisions clés
+## Key decisions
 
-- **Observation** (`@Observable`, Swift 5.9) plutôt que `ObservableObject` : moins de boilerplate, granularité fine des invalidations. Les ViewModels sont `@MainActor`.
-- **Réglages** : `AppSettings` centralise apparence, langue et secrets. Persistance via `UserDefaults` (non sensible) et **Keychain** (secrets). Injecté dans l'environnement SwiftUI.
-- **Localisation maison** : un dictionnaire `[lang: [clé: valeur]]` (`Strings.swift`) avec repli `en`, résolu par `settings.t("clé")`. Plus simple à éditer qu'un `.strings` pour un petit périmètre ; l'identifiant de locale courant est exposé via `AppLocale` pour le formatage de dates hors environnement SwiftUI.
-- **Réglages multiplateforme** : sur macOS, scène native `Settings` (⌘,). Sur iOS, feuille présentée depuis `ContentView` (bouton engrenage dans la toolbar).
-- **Keychain** : `service` dérivé du `bundleIdentifier` pour isoler les entrées ; secrets jamais écrits en clair ni loggés.
-- **Build** : projet Xcode **généré** par XcodeGen (`project.yml`) — le `.xcodeproj` n'est pas versionné (`.gitignore`). Régénérer avec `xcodegen generate`.
-- **Signature/notarisation** : gérées manuellement dans `release.sh` (Developer ID + Hardened Runtime + timestamp avec retry), car `xcodebuild` en Release échoue souvent sur les xattrs `com.apple.provenance`.
-
-## Ajouter une entité métier
-
-1. Crée `Models/MonType.swift` (`Codable, Identifiable`).
-2. Adapte `ItemsViewModel` (ou crée un VM dédié) : remplace `Item.sampleData()` par ton vrai chargement.
-3. Adapte les vues `Item*` ou duplique-les pour ton type.
-4. Ajoute les clés d'affichage dans `Strings.swift`.
+- **Polling**: `DishViewModel` polls status+history every 2 s, obstruction map every
+  minute — only while the dashboard is visible (`startPolling`/`stopPolling` on
+  appear/disappear). News/launches load once and refresh on demand only: Launch
+  Library 2 is rate-limited (~15 req/h).
+- **Destructive dish actions** (`reboot`, `stow`) always sit behind a
+  `confirmationDialog`. Never trigger them from automated tests.
+- **Unreachable dish degrades gracefully**: a `ContentUnavailableView` explains the
+  situation (off-LAN) instead of erroring; polling silently retries.
+- **Charts** (Swift Charts): latency and throughput are **two separate single-axis
+  charts** (never dual-axis). Throughput uses a fixed blue/orange pair (CVD-safe) with
+  a legend; connection status is icon + label, never color alone.
+- **Obstruction map**: rendered to a `CGImage` (1 px per SNR cell, upscaled with
+  `interpolation(.none)`) — far cheaper than a ~15 000-rect `Canvas`.
+- **News**: Google News RSS (`hl` follows the app language), parsed with a minimal
+  `XMLParser` delegate. No API key anywhere in the app.
+- **Observation** (`@Observable`, `@MainActor`) rather than `ObservableObject`.
+- **Settings**: `AppSettings` centralizes appearance + language (UserDefaults). The
+  template's Keychain/API-key machinery was removed — nothing to authenticate.
+- **In-house localization**: `[lang: [key: value]]` table (`Strings.swift`) with `en`
+  fallback, resolved via `settings.t("key")`; `AppLocale.identifier` exposes the
+  current locale to model-level date formatting.
+- **Build**: Xcode project **generated** by XcodeGen (`project.yml`); `.xcodeproj` is
+  not versioned. Regenerate with `xcodegen generate` after any `project.yml` change.
+- **Signing/notarization**: handled manually in `release.sh` (Developer ID +
+  Hardened Runtime + timestamp retry).
