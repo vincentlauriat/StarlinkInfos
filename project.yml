@@ -1,0 +1,104 @@
+name: StarlinkInfos
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    macOS: "14.0"
+    iOS: "17.0"
+
+# Schemes explicites (sinon xcodegen n'en génère pas → schemes perdus à chaque régénération).
+schemes:
+  StarlinkInfos:
+    build:
+      targets:
+        StarlinkInfos: all
+    run:
+      config: Debug
+  StarlinkInfosiOS:
+    build:
+      targets:
+        StarlinkInfosiOS: all
+    run:
+      config: Debug
+
+targets:
+  # ---------------------------------------------------------------------------
+  # macOS
+  # ---------------------------------------------------------------------------
+  StarlinkInfos:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: StarlinkInfos
+        excludes:
+          - "**/*.entitlements"
+          - "Info.plist"
+          - "Info-iOS.plist"
+    settings:
+      base:
+        PRODUCT_NAME: StarlinkInfos
+        PRODUCT_BUNDLE_IDENTIFIER: fr.vincentlauriat.starlinkinfos
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_VERSION: "5.9"
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_ENTITLEMENTS: StarlinkInfos/StarlinkInfos.entitlements
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: NO
+        CODE_SIGNING_ALLOWED: NO
+    info:
+      path: StarlinkInfos/Info.plist
+      properties:
+        CFBundleName: StarlinkInfos
+        CFBundleDisplayName: StarlinkInfos
+        CFBundleIdentifier: fr.vincentlauriat.starlinkinfos
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSMinimumSystemVersion: "14.0"
+        NSHumanReadableCopyright: ""
+
+  # ---------------------------------------------------------------------------
+  # iOS / iPadOS — codebase partagé avec la cible macOS
+  # ---------------------------------------------------------------------------
+  StarlinkInfosiOS:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: StarlinkInfos
+        excludes:
+          - "**/*.entitlements"
+          - "Info.plist"
+          - "Info-iOS.plist"
+    settings:
+      base:
+        PRODUCT_NAME: StarlinkInfos
+        PRODUCT_BUNDLE_IDENTIFIER: fr.vincentlauriat.starlinkinfos
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_VERSION: "5.9"
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        # Signature automatique gérée dans Xcode (ton Apple ID).
+        # Le build de vérification simulateur passe CODE_SIGNING_ALLOWED=NO en argument.
+        CODE_SIGN_STYLE: Automatic
+    info:
+      path: StarlinkInfos/Info-iOS.plist
+      properties:
+        CFBundleName: StarlinkInfos
+        CFBundleDisplayName: StarlinkInfos
+        CFBundleIdentifier: fr.vincentlauriat.starlinkinfos
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
