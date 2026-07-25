@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>StarlinkInfos</title>
+    <link>https://raw.githubusercontent.com/vincentlauriat/StarlinkInfos/master/appcast.xml</link>
+    <description>StarlinkInfos release feed</description>
+    <language>en</language>
+    <item>
+      <title>v1.0.0</title>
+      <pubDate>Sat, 25 Jul 2026 16:58:01 +0200</pubDate>
+      <sparkle:version>6</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>https://github.com/vincentlauriat/StarlinkInfos/releases/tag/v1.0.0</sparkle:releaseNotesLink>
+      <enclosure
+        url="https://github.com/vincentlauriat/StarlinkInfos/releases/download/v1.0.0/StarlinkInfos-1.0.0.dmg"
+        type="application/octet-stream"
+        sparkle:edSignature="eFU7CWEl1XHQp8jP8medMX8yL4gzQr1VFafilpeRGsPHX9/5+uYGQeG6qH0fATSfercgT8s8DwgXo6WLVR4iBA==" length="24384400" />
+    </item>
+  </channel>
+</rss>
