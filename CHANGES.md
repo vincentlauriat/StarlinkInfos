@@ -2,6 +2,24 @@
 
 Toutes les modifications notables de ce projet sont consignées ici, groupées par type.
 
+## [1.0.0] — 2026-07-25
+
+### Added
+- Icône graphique (antenne parabolique émettant un signal, ciel étoilé) —
+  `Scripts/make-starlink-icon.swift`, remplace le placeholder du template.
+- Mise à jour automatique **Sparkle 2.9.1** : `SPUStandardUpdaterController`,
+  menu « Check for Updates… », vérifications en tâche de fond sans jamais
+  installer sans confirmation. Clé EdDSA générée sous le compte trousseau
+  `StarlinkInfos`, sauvegarde locale gitignorée.
+- Repo GitHub public `vincentlauriat/StarlinkInfos`, branche `master`.
+- Première release notarisée : DMG signé Developer ID, notarisé, staplé,
+  publié sur GitHub Releases avec `appcast.xml` pour Sparkle.
+
+### Changed
+- `Scripts/release.sh` : signature des binaires imbriqués de
+  `Sparkle.framework`, signature Sparkle du DMG (`sign_update`), génération
+  de `appcast.xml`, artefacts écrits dans `release/` (plus à la racine).
+
 ## [Unreleased]
 
 ### Added

@@ -57,13 +57,19 @@ Scripts/                         # release.sh, make-app-icon.swift, make-dmg-bac
 project.yml                      # XcodeGen config (targets + SPM packages)
 ```
 
+## Install
+
+Download the latest notarized DMG from the
+[Releases page](https://github.com/vincentlauriat/StarlinkInfos/releases). The app
+auto-updates via Sparkle (Help menu → "Check for Updates…").
+
 ## Roadmap
 
 - [x] Real-time dish dashboard over local gRPC
 - [x] News + launches panes
-- [ ] Final app icon
+- [x] Final app icon
+- [x] Notarized DMG release + Sparkle auto-update
 - [ ] iOS signing & device testing
-- [ ] Notarized DMG release
 
 ## License
 
