@@ -1,9 +1,27 @@
 name: StarlinkInfos
 options:
   bundleIdPrefix: com.example
+  # macOS 15 / iOS 18 minimum : exigence de grpc-swift-2 (client gRPC de l'antenne).
   deploymentTarget:
-    macOS: "14.0"
-    iOS: "17.0"
+    macOS: "15.0"
+    iOS: "18.0"
+
+# Client gRPC de l'API locale de l'antenne Starlink (192.168.100.1:9200).
+# Le code Swift des messages/du service est généré depuis Proto/dish.protoset
+# (voir ARCHITECTURE.md) dans StarlinkInfos/Generated/.
+packages:
+  GRPCSwift:
+    url: https://github.com/grpc/grpc-swift-2
+    from: 2.4.2
+  GRPCNIOTransport:
+    url: https://github.com/grpc/grpc-swift-nio-transport
+    from: 2.9.0
+  GRPCProtobufPkg:
+    url: https://github.com/grpc/grpc-swift-protobuf
+    from: 2.4.1
+  SwiftProtobuf:
+    url: https://github.com/apple/swift-protobuf
+    from: 1.38.1
 
 # Schemes explicites (sinon xcodegen n'en génère pas → schemes perdus à chaque régénération).
 schemes:
@@ -27,7 +45,16 @@ targets:
   StarlinkInfos:
     type: application
     platform: macOS
-    deploymentTarget: "14.0"
+    deploymentTarget: "15.0"
+    dependencies:
+      - package: GRPCSwift
+        product: GRPCCore
+      - package: GRPCNIOTransport
+        product: GRPCNIOTransportHTTP2
+      - package: GRPCProtobufPkg
+        product: GRPCProtobuf
+      - package: SwiftProtobuf
+        product: SwiftProtobuf
     sources:
       - path: StarlinkInfos
         excludes:
@@ -42,7 +69,7 @@ targets:
         SWIFT_VERSION: "5.9"
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
-        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        MACOSX_DEPLOYMENT_TARGET: "15.0"
         CODE_SIGN_ENTITLEMENTS: StarlinkInfos/StarlinkInfos.entitlements
         CODE_SIGN_IDENTITY: ""
         CODE_SIGNING_REQUIRED: NO
@@ -64,7 +91,16 @@ targets:
   StarlinkInfosiOS:
     type: application
     platform: iOS
-    deploymentTarget: "17.0"
+    deploymentTarget: "18.0"
+    dependencies:
+      - package: GRPCSwift
+        product: GRPCCore
+      - package: GRPCNIOTransport
+        product: GRPCNIOTransportHTTP2
+      - package: GRPCProtobufPkg
+        product: GRPCProtobuf
+      - package: SwiftProtobuf
+        product: SwiftProtobuf
     sources:
       - path: StarlinkInfos
         excludes:
@@ -79,7 +115,7 @@ targets:
         SWIFT_VERSION: "5.9"
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
-        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+        IPHONEOS_DEPLOYMENT_TARGET: "18.0"
         TARGETED_DEVICE_FAMILY: "1,2"
         # Signature automatique gérée dans Xcode (ton Apple ID).
         # Le build de vérification simulateur passe CODE_SIGNING_ALLOWED=NO en argument.
@@ -92,6 +128,7 @@ targets:
         CFBundleIdentifier: fr.vincentlauriat.starlinkinfos
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSLocalNetworkUsageDescription: "StarlinkInfos communique avec votre antenne Starlink (192.168.100.1) sur le réseau local pour afficher l'état de la connexion."
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait

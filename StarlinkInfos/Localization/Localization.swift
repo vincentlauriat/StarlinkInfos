@@ -59,18 +59,9 @@ final class AppSettings {
         }
     }
 
-    /// Exemple de secret stocké dans le Keychain (jamais en clair dans UserDefaults).
-    /// Remplace / supprime selon tes besoins — sert de patron pour tes propres clés API.
-    var apiKey: String {
-        didSet { Keychain.set(apiKey, account: "api-key") }
-    }
-
-    var apiKeyConfigured: Bool { !apiKey.isEmpty }
-
     init() {
         appearanceRaw = UserDefaults.standard.string(forKey: "appearance") ?? AppearanceMode.system.rawValue
         languageRaw = UserDefaults.standard.string(forKey: "language") ?? AppLanguage.system.rawValue
-        apiKey = Keychain.get(account: "api-key") ?? ""
         AppLocale.identifier = localeIdentifier
     }
 
