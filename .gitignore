@@ -15,10 +15,11 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
-# Release artifacts (published on the Releases page, not versioned)
+# Release artifacts (root or release/, published on the Releases page, not versioned)
 *.dmg
+*.zip
+release-notes-*.md
 dmg-staging/
-release/
 
 # Sparkle CLI tools (downloaded by release.sh) and the EdDSA private-key backup
 # — NEVER commit the private key. See Scripts/release.sh header for details.
