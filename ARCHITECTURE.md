@@ -75,9 +75,10 @@ Starlink LAN.
 | **Views** | Pure SwiftUI | `Views/ContentView.swift`, `Views/Dashboard/*` |
 | **ViewModels** | `@Observable @MainActor` state, polling orchestration | `DishViewModel`, `FeedViewModel` |
 | **Models** | App-facing structs | `DishModels.swift`, `FeedModels.swift` |
-| **Services** | gRPC / HTTP access | `DishClient`, `NewsService`, `LaunchService` |
+| **Services** | gRPC / HTTP access | `DishClient`, `NewsService`, `LaunchService`, `ConstellationService` |
 | **Generated** | protoc output — regenerate, never edit | `Generated/**` |
 | **Localization** | Persisted settings + fr/en string table | `Localization/*.swift` |
+| **Tests** | Pure-logic unit tests (macOS only) | `StarlinkInfosTests/*.swift` |
 
 ## Key decisions
 
@@ -95,7 +96,15 @@ Starlink LAN.
 - **Obstruction map**: rendered to a `CGImage` (1 px per SNR cell, upscaled with
   `interpolation(.none)`) — far cheaper than a ~15 000-rect `Canvas`.
 - **News**: Google News RSS (`hl` follows the app language), parsed with a minimal
-  `XMLParser` delegate. No API key anywhere in the app.
+  `XMLParser` delegate (`RSSParser`, internal not private, so it's unit-testable via
+  `@testable import`). No API key anywhere in the app.
+- **Constellation stats**: satellite count from Celestrak
+  (`gp.php?GROUP=starlink&FORMAT=json`, free, no key, USSF catalog data). Celestrak
+  rate-limits to ~1 request/2h and sometimes replies with a plain-text notice instead
+  of JSON when queried again too soon — `ConstellationService` treats that as a
+  silent, non-fatal failure (never surfaced to the user), and it's only fetched
+  alongside the on-demand news/launches refresh, never polled. Attribution
+  ("Celestrak") shown next to the count per their usage policy.
 - **Observation** (`@Observable`, `@MainActor`) rather than `ObservableObject`.
 - **Settings**: `AppSettings` centralizes appearance + language (UserDefaults). The
   template's Keychain/API-key machinery was removed — nothing to authenticate.

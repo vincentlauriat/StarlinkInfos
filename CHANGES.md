@@ -2,6 +2,20 @@
 
 Toutes les modifications notables de ce projet sont consignées ici, groupées par type.
 
+## [Unreleased]
+
+### Added
+- Cible de tests unitaires `StarlinkInfosTests` (macOS) : mapping des ring
+  buffers d'historique de l'antenne (`DishClient.samples(from:)`) et parseur
+  RSS (`RSSParser`), 7 tests.
+- Stats de constellation dans le volet Lancements : nombre de satellites
+  Starlink catalogués en orbite via Celestrak (gratuit, sans clé), affiché en
+  en-tête de section avec attribution ; échoue silencieusement si Celestrak
+  rate-limite (~1 req/2h).
+- Signature iOS automatique (`DEVELOPMENT_TEAM: KFLACS69T9`) ; build et
+  lancement vérifiés sur simulateur iPhone (données live de l'antenne via le
+  réseau du Mac hôte).
+
 ## [1.0.0] — 2026-07-25
 
 ### Added

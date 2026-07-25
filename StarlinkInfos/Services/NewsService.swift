@@ -14,7 +14,8 @@ enum NewsService {
 }
 
 /// Parseur RSS 2.0 minimal (XMLParser) : title / link / pubDate / source par <item>.
-private final class RSSParser: NSObject, XMLParserDelegate {
+/// Internal (pas `private`) pour être testable via `@testable import`.
+final class RSSParser: NSObject, XMLParserDelegate {
     private var articles: [Article] = []
     private var inItem = false
     private var currentElement = ""

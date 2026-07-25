@@ -8,6 +8,7 @@ import Observation
 final class FeedViewModel {
     var articles: [Article] = []
     var launches: [StarlinkLaunch] = []
+    var satelliteCount: Int?
     var searchText = ""
     var isLoading = false
     var errorMessage: String?
@@ -25,6 +26,7 @@ final class FeedViewModel {
         defer { isLoading = false }
         async let news = NewsService.fetch(lang: lang)
         async let upcoming = LaunchService.fetchUpcoming()
+        async let satellites = ConstellationService.fetchSatelliteCount()
         do {
             articles = try await news
         } catch {
@@ -37,5 +39,8 @@ final class FeedViewModel {
             // ont chargé, sinon l'erreur actus a déjà été remontée.
             if articles.isEmpty { errorMessage = error.localizedDescription }
         }
+        // Purement décoratif et rate-limité côté Celestrak (1 requête/2h) :
+        // échec toujours silencieux, jamais remonté à l'utilisateur.
+        satelliteCount = try? await satellites
     }
 }

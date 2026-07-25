@@ -15,6 +15,7 @@ upcoming launches on the side.
 | Graceful "dish unreachable" state when off the Starlink LAN | ✅ | ✅ |
 | Starlink news (Google News RSS, follows app language) | ✅ | ✅ |
 | Upcoming Starlink launches (Launch Library 2) | ✅ | ✅ |
+| Constellation size (satellites in orbit, via Celestrak) | ✅ | ✅ |
 | Settings: appearance (system/light/dark), language (system/fr/en) | ✅ | ✅ |
 
 The dish API (`192.168.100.1:9200`, gRPC) is local and unauthenticated — no account
@@ -52,9 +53,17 @@ StarlinkInfos/
 ├── Services/                    # DishClient (gRPC actor), NewsService, LaunchService
 ├── Generated/                   # protoc output from Proto/dish.protoset — do not edit
 └── Localization/                # AppSettings + fr/en string table
-Proto/dish.protoset              # dish API descriptor set (dumped via gRPC reflection)
-Scripts/                         # release.sh, make-app-icon.swift, make-dmg-background.swift
-project.yml                      # XcodeGen config (targets + SPM packages)
+StarlinkInfosTests/               # unit tests: history ring-buffer mapping, RSS parser
+Proto/dish.protoset               # dish API descriptor set (dumped via gRPC reflection)
+Scripts/                          # release.sh, make-starlink-icon.swift, make-dmg-background.swift
+project.yml                       # XcodeGen config (targets + SPM packages)
+```
+
+## Tests
+
+```bash
+xcodebuild -project StarlinkInfos.xcodeproj -scheme StarlinkInfos -configuration Debug \
+  CODE_SIGNING_ALLOWED=NO test
 ```
 
 ## Install
@@ -69,7 +78,8 @@ auto-updates via Sparkle (Help menu → "Check for Updates…").
 - [x] News + launches panes
 - [x] Final app icon
 - [x] Notarized DMG release + Sparkle auto-update
-- [ ] iOS signing & device testing
+- [x] Constellation stats, unit tests, iOS simulator verification
+- [ ] iOS testing on a physical device
 
 ## License
 

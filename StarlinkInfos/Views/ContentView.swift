@@ -89,10 +89,21 @@ struct SidebarView: View {
                     .tag(SidebarSelection.dashboard)
             }
 
-            Section(settings.t("section_launches")) {
+            Section {
                 ForEach(feedVM.launches.prefix(8)) { launch in
                     LaunchRowView(launch: launch)
                         .tag(SidebarSelection.launch(launch.id))
+                }
+            } header: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(settings.t("section_launches"))
+                    if let count = feedVM.satelliteCount {
+                        // Source Celestrak (catalogue USSF) — attribution requise.
+                        Text(settings.t("constellation_count") + " \(count) · Celestrak")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                            .textCase(nil)
+                    }
                 }
             }
 
