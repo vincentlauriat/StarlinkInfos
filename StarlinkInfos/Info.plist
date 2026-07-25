@@ -21,8 +21,18 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>14.0</string>
+	<string>15.0</string>
 	<key>NSHumanReadableCopyright</key>
 	<string></string>
+	<key>SUAutomaticallyUpdate</key>
+	<false/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/vincentlauriat/StarlinkInfos/master/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>dfikprsOcAmXXkLq821pg7SpSbr73EIHsSIOTyYeYj8=</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
 </dict>
 </plist>

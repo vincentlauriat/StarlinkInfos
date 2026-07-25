@@ -22,6 +22,10 @@ packages:
   SwiftProtobuf:
     url: https://github.com/apple/swift-protobuf
     from: 1.38.1
+  # Auto-update (macOS only — App Store/TestFlight would handle this on iOS).
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: 2.9.1
 
 # Schemes explicites (sinon xcodegen n'en génère pas → schemes perdus à chaque régénération).
 schemes:
@@ -55,6 +59,7 @@ targets:
         product: GRPCProtobuf
       - package: SwiftProtobuf
         product: SwiftProtobuf
+      - package: Sparkle
     sources:
       - path: StarlinkInfos
         excludes:
@@ -82,8 +87,16 @@ targets:
         CFBundleIdentifier: fr.vincentlauriat.starlinkinfos
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
-        LSMinimumSystemVersion: "14.0"
+        LSMinimumSystemVersion: "15.0"
         NSHumanReadableCopyright: ""
+        # Sparkle auto-update. Public half of the EdDSA key generated in the
+        # login keychain under account "StarlinkInfos" — NEVER regenerate this
+        # key (see Scripts/release.sh header).
+        SUFeedURL: "https://raw.githubusercontent.com/vincentlauriat/StarlinkInfos/master/appcast.xml"
+        SUPublicEDKey: "dfikprsOcAmXXkLq821pg7SpSbr73EIHsSIOTyYeYj8="
+        SUEnableAutomaticChecks: true
+        SUScheduledCheckInterval: 86400
+        SUAutomaticallyUpdate: false
 
   # ---------------------------------------------------------------------------
   # iOS / iPadOS — codebase partagé avec la cible macOS

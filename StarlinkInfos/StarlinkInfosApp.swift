@@ -1,8 +1,27 @@
 import SwiftUI
 
+#if os(macOS)
+import Sparkle
+#endif
+
 @main
 struct StarlinkInfosApp: App {
     @State private var settings = AppSettings()
+
+    #if os(macOS)
+    private let updaterController: SPUStandardUpdaterController = {
+        let controller = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        )
+        // Checks run automatically in the background, but never install
+        // silently — the user always confirms before anything is applied.
+        controller.updater.automaticallyChecksForUpdates = true
+        controller.updater.automaticallyDownloadsUpdates = false
+        return controller
+    }()
+    #endif
 
     var body: some Scene {
         WindowGroup {
@@ -16,6 +35,11 @@ struct StarlinkInfosApp: App {
         .defaultSize(width: 960, height: 640)
         .commands {
             CommandGroup(replacing: .newItem) {}
+            CommandGroup(after: .appInfo) {
+                Button("Check for Updates…") {
+                    updaterController.checkForUpdates(nil)
+                }
+            }
         }
         #endif
 
