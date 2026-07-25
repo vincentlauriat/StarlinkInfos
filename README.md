@@ -37,7 +37,7 @@ To regenerate the gRPC client after a dish firmware update, see `ARCHITECTURE.md
 ## Release (macOS)
 
 ```bash
-./Scripts/release.sh 1.0.0   # build → sign → DMG → notarize → staple
+./Scripts/release.sh 1.1.0   # build → sign → DMG → notarize → staple → Sparkle-sign
 ```
 
 ## Project layout
