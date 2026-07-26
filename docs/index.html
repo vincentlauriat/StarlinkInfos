@@ -43,12 +43,13 @@
   .btn-ghost:hover{border-color:#2b3e66;background:var(--panel)}
   .btn-sm{padding:8px 15px;font-size:14px;border-radius:9px}
 
-  .langsel{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:none}
-  .langsel button{background:transparent;border:0;color:var(--muted);font:600 12.5px/1 var(--font-mono);
+  .langtog{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:none}
+  .langtog button{background:transparent;border:0;color:var(--muted);font:600 12.5px/1 var(--font-mono);
     padding:0 10px;min-height:36px;cursor:pointer}
-  .langsel button+button{border-left:1px solid var(--line)}
-  .langsel button:hover{color:var(--txt)}
-  .langsel button.on{background:var(--accent);color:var(--on-accent)}
+  .langtog button+button{border-left:1px solid var(--line)}
+  .langtog button:hover{color:var(--txt)}
+  .langtog button.on{background:var(--accent);color:var(--on-accent)}
+  @media(max-width:600px){.langtog button{padding:0 7px;font-size:11.5px}}
 
   header{padding:74px 0 36px;background:radial-gradient(900px 420px at 80% -10%,rgba(74,184,60,.2),transparent 60%),radial-gradient(600px 300px at 10% 10%,rgba(106,214,92,.08),transparent 60%)}
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
@@ -116,7 +117,7 @@
     <a href="#screens"><span class="en">Screens</span><span class="fr">Aperçu</span><span class="zh">畫面</span></a>
     <a href="#install"><span class="en">Install</span><span class="fr">Installer</span><span class="zh">安裝</span></a>
     <a href="https://github.com/vincentlauriat/StarlinkInfos">GitHub</a>
-    <div class="langsel" role="group" aria-label="Language / Langue / 語言">
+    <div class="langtog" role="group" aria-label="Language / Langue / 語言">
       <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
       <button type="button" data-lang="fr" onclick="setLang('fr')">FR</button>
       <button type="button" data-lang="zh" onclick="setLang('zh')">中文</button>
@@ -311,7 +312,7 @@
     document.documentElement.lang=LANG_TAG[l];
     /* On boucle sur les boutons au lieu de les nommer un par un : ajouter une
        4ᵉ langue ne demandera alors aucune retouche de ce script. */
-    document.querySelectorAll('.langsel button').forEach(function(b){
+    document.querySelectorAll('.langtog button').forEach(function(b){
       var on=b.dataset.lang===l;
       b.classList.toggle('on',on);
       b.setAttribute('aria-pressed',on?'true':'false');
