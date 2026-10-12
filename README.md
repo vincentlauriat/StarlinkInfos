@@ -39,6 +39,7 @@ launches and constellation stats on the side.
 | 📡 **Real-time dashboard** | Connection status, uptime, latency, throughput, GPS lock, Ethernet speed, dish tilt — polled live from the dish itself |
 | 📈 **Latency &amp; throughput charts** | Last 15 minutes of ping and download/upload speed, from the dish's own history buffer |
 | 🛰️ **Obstruction map** | The exact sky-view SNR grid the dish uses to detect obstructions |
+| ✈️ **Link monitor** (macOS) | Measures the link even when the dish is out of reach (e.g. Starlink on a plane): latency to the Internet vs. the space segment, packet loss and egress PoP every 30 s — live view, recorded sessions with CSV export, optional auto-start in flight |
 | 🔁 **Dish controls** | Reboot or stow/unstow, always behind a confirmation |
 | 📰 **Starlink news** | Google News RSS feed, follows the app's language (fr/en) |
 | 🚀 **Launches &amp; constellation** | Upcoming Starlink launches with a countdown, plus a live satellite-in-orbit count (Celestrak) |
@@ -46,7 +47,8 @@ launches and constellation stats on the side.
 | 🔄 **Auto-update** | Signed, notarized, self-updating via Sparkle |
 
 The dish API (`192.168.100.1:9200`, gRPC) is local and unauthenticated — the
-dashboard only works while connected to the Starlink network.
+dashboard only works while connected to the Starlink network. The link monitor works
+on any connection.
 
 ## Install
 
@@ -84,7 +86,7 @@ xcodebuild -project StarlinkInfos.xcodeproj -scheme StarlinkInfos -configuration
 ## Release (macOS)
 
 ```bash
-./Scripts/release.sh 1.1.0   # build → sign → DMG → notarize → staple → Sparkle-sign
+./Scripts/release.sh 1.2.0   # build → sign → DMG → notarize → staple → Sparkle-sign
 ```
 
 ## Project layout
@@ -92,18 +94,20 @@ xcodebuild -project StarlinkInfos.xcodeproj -scheme StarlinkInfos -configuration
 ```
 StarlinkInfos/
 ├── StarlinkInfosApp.swift       # @main
-├── Models/                      # DishModels (status/history/map), FeedModels (news/launches)
-├── ViewModels/                  # DishViewModel (2 s polling), FeedViewModel
+├── Models/                      # DishModels (status/history/map), FeedModels (news/launches), LinkModels
+├── ViewModels/                  # DishViewModel (2 s polling), FeedViewModel, LinkMonitor (macOS)
 ├── Views/
 │   ├── ContentView.swift        # NavigationSplitView, sidebar with 3 sections
-│   └── Dashboard/               # dashboard, charts, obstruction map, controls
-├── Services/                    # DishClient (gRPC actor), NewsService, LaunchService, ConstellationService
+│   ├── Dashboard/               # dashboard, charts, obstruction map, controls
+│   └── Link/                    # link monitor (macOS)
+├── Services/                    # DishClient (gRPC actor), NewsService, LaunchService, ConstellationService, LinkProbe, LinkSessionStore
 ├── Generated/                   # protoc output from Proto/dish.protoset — do not edit
 └── Localization/                # AppSettings + fr/en string table
-StarlinkInfosTests/               # unit tests: history ring-buffer mapping, RSS parser
+StarlinkInfosTests/               # unit tests: history ring-buffer mapping, RSS parser, link parsers/CSV
 Proto/dish.protoset               # dish API descriptor set (dumped via gRPC reflection)
 docs/                             # GitHub Pages landing page
-Scripts/                          # release.sh, make-starlink-icon.swift, make-dmg-background.swift
+Scripts/                          # release.sh (+ dmgbuild settings), icon & DMG background makers
+Scripts/flight/                   # standalone in-flight link monitor + HTML chart (Python)
 project.yml                       # XcodeGen config (targets + SPM packages)
 ```
 

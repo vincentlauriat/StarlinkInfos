@@ -46,3 +46,6 @@ TODOS.md
 
 # In-flight measurements (contain public IP + flight timestamps — kept local)
 Scripts/flight/data/
+
+# dmgbuild private venv (Scripts/release.sh)
+.dmgbuild-venv/
