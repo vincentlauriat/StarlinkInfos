@@ -2,6 +2,12 @@
 
 Toutes les modifications notables de ce projet sont consignées ici, groupées par type.
 
+## [Unreleased]
+
+### Docs
+- Landing page : carte pleine largeur « Link monitor » (en/fr/zh-Hant), badge
+  « macOS · nouveau en 1.2 » (2026-10-12).
+
 ## [1.2.0] — 2026-10-12
 
 ### Added
