@@ -43,3 +43,6 @@ COMMANDS.md
 MEMORY.md
 PLAN.md
 TODOS.md
+
+# In-flight measurements (contain public IP + flight timestamps — kept local)
+Scripts/flight/data/
