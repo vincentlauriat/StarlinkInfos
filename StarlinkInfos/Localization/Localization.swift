@@ -59,7 +59,14 @@ final class AppSettings {
         }
     }
 
+    /// macOS : démarre seule une session de mesure du lien quand l'antenne est
+    /// injoignable mais que la sortie Internet est Starlink (cas de l'avion).
+    var linkAutoStart: Bool {
+        didSet { UserDefaults.standard.set(linkAutoStart, forKey: "linkAutoStart") }
+    }
+
     init() {
+        linkAutoStart = UserDefaults.standard.bool(forKey: "linkAutoStart")
         appearanceRaw = UserDefaults.standard.string(forKey: "appearance") ?? AppearanceMode.system.rawValue
         languageRaw = UserDefaults.standard.string(forKey: "language") ?? AppLanguage.system.rawValue
         AppLocale.identifier = localeIdentifier

@@ -7,6 +7,10 @@ import Sparkle
 @main
 struct StarlinkInfosApp: App {
     @State private var settings = AppSettings()
+    #if os(macOS)
+    /// Au niveau de l'App : une session de mesure survit aux changements de section.
+    @State private var linkMonitor = LinkMonitor()
+    #endif
 
     #if os(macOS)
     private let updaterController: SPUStandardUpdaterController = {
@@ -27,6 +31,12 @@ struct StarlinkInfosApp: App {
         WindowGroup {
             ContentView()
                 .environment(settings)
+                #if os(macOS)
+                .environment(linkMonitor)
+                .task(id: settings.linkAutoStart) {
+                    linkMonitor.setAutoStart(settings.linkAutoStart)
+                }
+                #endif
                 .preferredColorScheme(settings.appearance.colorScheme)
         }
         #if os(macOS)
