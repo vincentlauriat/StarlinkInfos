@@ -2,7 +2,7 @@
 
 Toutes les modifications notables de ce projet sont consignées ici, groupées par type.
 
-## [Unreleased]
+## [1.2.0] — 2026-10-12
 
 ### Added
 - `Scripts/flight/` : outils de mesure du lien Starlink en avion (2026-10-12).
@@ -24,6 +24,10 @@ Toutes les modifications notables de ce projet sont consignées ici, groupées p
   démarrage automatique optionnel en vol (réglage), graphes Swift Charts (bout en
   bout / segment spatial, changements de PoP, pertes). macOS uniquement ; iOS
   compile sans la fonction. 10 tests unitaires (parseurs ping/traceroute/PoP, CSV).
+
+### Changed
+- `release.sh` : DMG construit avec `dmgbuild` (venv privé, roues épinglées par
+  hash) au lieu de l'AppleScript Finder, avec vérification de la mise en page.
 
 ### Decisions
 - En avion (Wi-Fi Air France via Starlink), l'API gRPC de l'antenne
