@@ -4,6 +4,8 @@ import SwiftUI
 struct DishDashboardView: View {
     @Environment(AppSettings.self) private var settings
     @Bindable var vm: DishViewModel
+    /// macOS : ouvre la mesure du lien (utile quand l'antenne est injoignable).
+    var onOpenLinkMonitor: (() -> Void)? = nil
 
     var body: some View {
         ScrollView {
@@ -26,11 +28,17 @@ struct DishDashboardView: View {
 
                     DishControlsSection(vm: vm)
                 } else if !vm.isReachable {
-                    ContentUnavailableView(
-                        settings.t("dish_unreachable_title"),
-                        systemImage: "antenna.radiowaves.left.and.right.slash",
-                        description: Text(settings.t("dish_unreachable_desc"))
-                    )
+                    ContentUnavailableView {
+                        Label(settings.t("dish_unreachable_title"),
+                              systemImage: "antenna.radiowaves.left.and.right.slash")
+                    } description: {
+                        Text(settings.t("dish_unreachable_desc"))
+                    } actions: {
+                        if let onOpenLinkMonitor {
+                            Button(settings.t("link_open_from_dashboard"), action: onOpenLinkMonitor)
+                                .buttonStyle(.borderedProminent)
+                        }
+                    }
                     .frame(maxWidth: .infinity)
                     .padding(.top, 60)
                 } else {

@@ -27,6 +27,15 @@ struct SettingsView: View {
                 .labelsHidden()
             }
 
+            #if os(macOS)
+            Section(settings.t("link_title")) {
+                Toggle(settings.t("settings_link_auto"), isOn: $settings.linkAutoStart)
+                Text(settings.t("settings_link_auto_desc"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            #endif
+
             Section(settings.t("settings_about")) {
                 Text(settings.t("settings_about_text"))
                     .font(.callout)
@@ -35,7 +44,7 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         #if os(macOS)
-        .frame(width: 460, height: 420)
+        .frame(width: 460, height: 520)
         #endif
     }
 }

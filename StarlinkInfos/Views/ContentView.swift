@@ -2,12 +2,16 @@ import SwiftUI
 
 enum SidebarSelection: Hashable {
     case dashboard
+    case link
     case article(String)
     case launch(String)
 }
 
 struct ContentView: View {
     @Environment(AppSettings.self) private var settings
+    #if os(macOS)
+    @Environment(LinkMonitor.self) private var linkMonitor
+    #endif
     @State private var dishVM = DishViewModel()
     @State private var feedVM = FeedViewModel()
     @State private var selection: SidebarSelection? = .dashboard
@@ -33,7 +37,17 @@ struct ContentView: View {
         } detail: {
             switch selection {
             case .dashboard, nil:
+                #if os(macOS)
+                DishDashboardView(vm: dishVM, onOpenLinkMonitor: { selection = .link })
+                #else
                 DishDashboardView(vm: dishVM)
+                #endif
+            case .link:
+                #if os(macOS)
+                LinkMonitorView(monitor: linkMonitor)
+                #else
+                EmptySelectionView()
+                #endif
             case .article(let id):
                 if let article = feedVM.articles.first(where: { $0.id == id }) {
                     ArticleDetailView(article: article)
@@ -87,6 +101,10 @@ struct SidebarView: View {
             Section(settings.t("section_connection")) {
                 Label(settings.t("dashboard_row"), systemImage: "antenna.radiowaves.left.and.right")
                     .tag(SidebarSelection.dashboard)
+                #if os(macOS)
+                LinkSidebarRow()
+                    .tag(SidebarSelection.link)
+                #endif
             }
 
             Section {
@@ -137,6 +155,29 @@ struct SidebarView: View {
 }
 
 // MARK: - Lignes de la sidebar
+
+#if os(macOS)
+struct LinkSidebarRow: View {
+    @Environment(AppSettings.self) private var settings
+    @Environment(LinkMonitor.self) private var monitor
+
+    var body: some View {
+        Label {
+            HStack {
+                Text(settings.t("link_row"))
+                if monitor.isRecording {
+                    Spacer()
+                    Image(systemName: "record.circle.fill")
+                        .foregroundStyle(.red)
+                        .help(settings.t("link_recording"))
+                }
+            }
+        } icon: {
+            Image(systemName: "waveform.path.ecg")
+        }
+    }
+}
+#endif
 
 struct ArticleRowView: View {
     @Environment(AppSettings.self) private var settings

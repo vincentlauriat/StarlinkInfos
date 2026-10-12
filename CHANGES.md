@@ -17,6 +17,14 @@ Toutes les modifications notables de ce projet sont consignées ici, groupées p
   `100.64.0.1` ignorant les pings directs). `make_chart.py` trace les deux
   latences et marque les changements de PoP ; il lit toujours les anciens CSV.
 
+- App macOS : section **Mesure du lien** (sidebar Connexion + bouton « Mesurer le
+  lien quand même » sur l'écran antenne injoignable). Même mesure que
+  `flight_monitor.py` (`LinkProbe`), vue live 30 min, sessions enregistrées
+  (Démarrer/Arrêter, JSON dans Application Support, export CSV, suppression),
+  démarrage automatique optionnel en vol (réglage), graphes Swift Charts (bout en
+  bout / segment spatial, changements de PoP, pertes). macOS uniquement ; iOS
+  compile sans la fonction. 10 tests unitaires (parseurs ping/traceroute/PoP, CSV).
+
 ### Decisions
 - En avion (Wi-Fi Air France via Starlink), l'API gRPC de l'antenne
   `192.168.100.1:9200` n'est pas joignable depuis le réseau passagers :

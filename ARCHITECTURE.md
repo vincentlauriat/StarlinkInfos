@@ -72,10 +72,10 @@ Starlink LAN.
 | Layer | Role | Files |
 |---|---|---|
 | **App** | Entry points, scenes, `AppSettings` injection | `StarlinkInfosApp.swift` |
-| **Views** | Pure SwiftUI | `Views/ContentView.swift`, `Views/Dashboard/*` |
-| **ViewModels** | `@Observable @MainActor` state, polling orchestration | `DishViewModel`, `FeedViewModel` |
-| **Models** | App-facing structs | `DishModels.swift`, `FeedModels.swift` |
-| **Services** | gRPC / HTTP access | `DishClient`, `NewsService`, `LaunchService`, `ConstellationService` |
+| **Views** | Pure SwiftUI | `Views/ContentView.swift`, `Views/Dashboard/*`, `Views/Link/*` (macOS) |
+| **ViewModels** | `@Observable @MainActor` state, polling orchestration | `DishViewModel`, `FeedViewModel`, `LinkMonitor` (macOS) |
+| **Models** | App-facing structs | `DishModels.swift`, `FeedModels.swift`, `LinkModels.swift` (macOS) |
+| **Services** | gRPC / HTTP access | `DishClient`, `NewsService`, `LaunchService`, `ConstellationService`, `LinkProbe` + `LinkSessionStore` (macOS) |
 | **Generated** | protoc output — regenerate, never edit | `Generated/**` |
 | **Localization** | Persisted settings + fr/en string table | `Localization/*.swift` |
 | **Tests** | Pure-logic unit tests (macOS only) | `StarlinkInfosTests/*.swift` |
@@ -105,6 +105,21 @@ Starlink LAN.
   silent, non-fatal failure (never surfaced to the user), and it's only fetched
   alongside the on-demand news/launches refresh, never polled. Attribution
   ("Celestrak") shown next to the count per their usage policy.
+- **Link monitor (macOS only)**: measures the Internet link independently of the dish
+  (useful when its API is unreachable, e.g. on a plane — verified 2026-10-12 on Air
+  France). Every 30 s, `LinkProbe` runs `/sbin/ping` (10 × 1.1.1.1) and
+  `/usr/sbin/traceroute` probes expiring at hop 2 (Starlink's CGNAT gateway
+  `100.64.0.1` drops direct ICMP echo but answers TTL-exceeded), gets the public IP
+  from api.ipify.org → reverse DNS `customer.<pop>.isp.starlink.com` → PoP code, and
+  asks ipinfo.io for the city only every 10 min or on PoP change. Possible because the
+  macOS app is not sandboxed; iOS cannot spawn these tools, so all link code is
+  `#if os(macOS)`. `LinkMonitor` lives at `App` level (sessions survive navigation),
+  samples while the view is visible or a session is recording, holds an
+  `idleSystemSleepDisabled` activity during sessions, and optionally auto-starts a
+  session (setting) when the dish is unreachable (TCP 192.168.100.1:9200) but egress is
+  Starlink. Sessions are one JSON file each in
+  `~/Library/Application Support/StarlinkInfos/LinkSessions/`; CSV export uses the
+  same columns as `Scripts/flight/flight_monitor.py`.
 - **Observation** (`@Observable`, `@MainActor`) rather than `ObservableObject`.
 - **Settings**: `AppSettings` centralizes appearance + language (UserDefaults). The
   template's Keychain/API-key machinery was removed — nothing to authenticate.
