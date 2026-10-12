@@ -6,16 +6,16 @@
     <description>StarlinkInfos release feed</description>
     <language>en</language>
     <item>
-      <title>v1.1.0</title>
-      <pubDate>Sat, 25 Jul 2026 21:19:15 +0200</pubDate>
-      <sparkle:version>10</sparkle:version>
-      <sparkle:shortVersionString>1.1.0</sparkle:shortVersionString>
+      <title>v1.2.0</title>
+      <pubDate>Mon, 12 Oct 2026 20:24:26 +0200</pubDate>
+      <sparkle:version>20</sparkle:version>
+      <sparkle:shortVersionString>1.2.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/vincentlauriat/StarlinkInfos/releases/tag/v1.1.0</sparkle:releaseNotesLink>
+      <sparkle:releaseNotesLink>https://github.com/vincentlauriat/StarlinkInfos/releases/tag/v1.2.0</sparkle:releaseNotesLink>
       <enclosure
-        url="https://github.com/vincentlauriat/StarlinkInfos/releases/download/v1.1.0/StarlinkInfos-1.1.0.dmg"
+        url="https://github.com/vincentlauriat/StarlinkInfos/releases/download/v1.2.0/StarlinkInfos-1.2.0.dmg"
         type="application/octet-stream"
-        sparkle:edSignature="bfGZsUbkM0gCajYwJa1liLIIo/qgzIKqvUsr02XHKmB38Hvfc3JBqBCkgQIvuSX5/1MCPyQSGwgbbqhLuMtVDQ==" length="24388774" />
+        sparkle:edSignature="eO028HZ8adYxjdidP9cgWPqgKM8ibjpLCsbqGOs3wLq09J6dNBLbrfYH9Y/lkXcA3pybXBgk7PdjkRRpDoztAw==" length="24488831" />
     </item>
   </channel>
 </rss>
