@@ -1,339 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="--accent:#6ad65c;--on-accent:#141414;--accent-ink:#2a7c1f">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StarlinkInfos — Your Starlink connection, at a glance</title>
-<meta name="description" content="A native macOS &amp; iOS app that talks directly to your Starlink dish's local API: real-time status, latency &amp; throughput charts, obstruction map, reboot/stow controls — plus Starlink news, upcoming launches and constellation stats. Free &amp; open-source (MIT), signed &amp; notarized.">
-<meta property="og:title" content="StarlinkInfos">
-<meta property="og:description" content="Real-time Starlink dish dashboard, latency &amp; throughput charts, obstruction map, and dish controls — straight from its local API. Plus Starlink news, launches and constellation stats.">
-<meta property="og:image" content="https://raw.githubusercontent.com/vincentlauriat/StarlinkInfos/master/docs/screenshots/dashboard.png">
+<meta name="description" content="A native macOS &amp; iOS app that talks directly to your Starlink dish&#x27;s local API: real-time status, latency &amp; throughput charts, obstruction map, reboot/stow controls — plus Starlink news, upcoming launches and constellation stats. Free &amp; open-source (MIT), signed &amp; notarized.">
+<meta name="theme-color" content="#eff1f2">
 <meta property="og:type" content="website">
+<meta property="og:title" content="StarlinkInfos — Your Starlink connection, at a glance">
+<meta property="og:description" content="A native macOS &amp; iOS app that talks directly to your Starlink dish&#x27;s local API: real-time status, latency &amp; throughput charts, obstruction map, reboot/stow controls — plus Starlink news, upcoming launches and constellation stats. Free &amp; open-source (MIT), signed &amp; notarized.">
+<meta property="og:url" content="https://vincentlauriat.github.io/StarlinkInfos/">
+<meta property="og:image" content="https://raw.githubusercontent.com/vincentlauriat/StarlinkInfos/master/docs/screenshots/dashboard.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b1224'/%3E%3Cpath d='M30 62 C24 50 34 34 50 34 C66 34 76 46 74 58 C72 66 60 70 52 66 C44 62 40 52 46 46' fill='none' stroke='%236ad65c' stroke-width='5' stroke-linecap='round'/%3E%3Cellipse cx='40' cy='58' rx='17' ry='9' fill='white' transform='rotate(-18 40 58)'/%3E%3Cline x1='55' y1='58' x2='66' y2='50' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='66' cy='50' r='4' fill='white'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/base.css">
-<style>
-  .card.wide{grid-column:1/-1}
-  .card .tag{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:500;letter-spacing:0;vertical-align:2px;color:var(--accent);background:var(--accent-soft)}
-  :root{
-    --bg:#070b16; --bg2:#0b1224; --panel:#101a31; --line:#1d2b4a;
-    --txt:#e8eefb; --muted:#9aabcc; --faint:#6c7da0;
-    --accent:#6ad65c; --accent2:#4ab83c; --accent-soft:rgba(106,214,92,.14);
-    --ok:#34d399; --warn:#f59e0b; --down:#f87171;
-    --maxw:1100px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--txt);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .mono{font-family:var(--font-mono)}
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 100 100&#x27;%3E%3Crect width=&#x27;100&#x27; height=&#x27;100&#x27; rx=&#x27;22&#x27; fill=&#x27;%230b1224&#x27;/%3E%3Cpath d=&#x27;M30 62 C24 50 34 34 50 34 C66 34 76 46 74 58 C72 66 60 70 52 66 C44 62 40 52 46 46&#x27; fill=&#x27;none&#x27; stroke=&#x27;%236ad65c&#x27; stroke-width=&#x27;5&#x27; stroke-linecap=&#x27;round&#x27;/%3E%3Cellipse cx=&#x27;40&#x27; cy=&#x27;58&#x27; rx=&#x27;17&#x27; ry=&#x27;9&#x27; fill=&#x27;white&#x27; transform=&#x27;rotate(-18 40 58)&#x27;/%3E%3Cline x1=&#x27;55&#x27; y1=&#x27;58&#x27; x2=&#x27;66&#x27; y2=&#x27;50&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;4&#x27; stroke-linecap=&#x27;round&#x27;/%3E%3Ccircle cx=&#x27;66&#x27; cy=&#x27;50&#x27; r=&#x27;4&#x27; fill=&#x27;white&#x27;/%3E%3C/svg%3E">
+<link rel="preload" href="/assets/schibsted.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/monograph/v1/monograph.css">
 
-  nav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(160%) blur(12px);background:rgba(7,11,22,.74);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
-  .brand{display:flex;align-items:center;gap:11px;font-weight:750;letter-spacing:-.2px}
-  .logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#0b1224,#1c2648);display:grid;place-items:center;box-shadow:0 4px 14px rgba(74,184,60,.35);border:1px solid #2b3e66}
-  .nav-links{display:flex;gap:24px;align-items:center;color:var(--muted);font-size:14.5px}
-  .nav-links a:hover{color:var(--txt)}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;font-weight:650;font-size:15px;transition:transform .12s ease,box-shadow .12s ease,background .12s}
-  .btn:hover{transform:translateY(-1px)}
-  .btn-primary{background:linear-gradient(135deg,#4ab83c,#6ad65c);color:#06120a;box-shadow:0 6px 22px rgba(74,184,60,.36)}
-  .btn-ghost{border:1px solid var(--line);color:var(--txt);background:transparent}
-  .btn-ghost:hover{border-color:#2b3e66;background:var(--panel)}
-  .btn-sm{padding:8px 15px;font-size:14px;border-radius:9px}
-
-  .langtog{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:none}
-  .langtog button{background:transparent;border:0;color:var(--muted);font:600 12.5px/1 var(--font-mono);
-    padding:0 10px;min-height:36px;cursor:pointer}
-  .langtog button+button{border-left:1px solid var(--line)}
-  .langtog button:hover{color:var(--txt)}
-  .langtog button.on{background:var(--accent);color:var(--on-accent)}
-  @media(max-width:600px){.langtog button{padding:0 7px;font-size:11.5px}}
-
-  header{padding:74px 0 36px;background:radial-gradient(900px 420px at 80% -10%,rgba(74,184,60,.2),transparent 60%),radial-gradient(600px 300px at 10% 10%,rgba(106,214,92,.08),transparent 60%)}
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-  .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:6px 13px;border-radius:999px;font-size:13px;margin-bottom:22px}
-  .pill .led{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
-  h1{font-size:clamp(36px,5.4vw,57px);line-height:1.05;font-weight:820;letter-spacing:-1.6px}
-  h1 .grad{background:linear-gradient(120deg,#a8e89e,#4ab83c);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .sub{max-width:540px;margin:20px 0 0;font-size:clamp(16px,2vw,19px);color:var(--muted)}
-  .cta{display:flex;gap:13px;flex-wrap:wrap;margin:30px 0 14px}
-  .meta{color:var(--faint);font-size:13px;display:flex;flex-wrap:wrap;gap:6px 14px}
-  .meta b{color:var(--muted);font-weight:600}
-  .hero-shot{position:relative}
-  .hero-shot img{width:100%;border-radius:16px;border:1px solid var(--line);box-shadow:0 30px 70px rgba(0,0,0,.6)}
-
-  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:var(--muted)}
-  .legend span{display:inline-flex;align-items:center;gap:7px}
-  .legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
-
-  section{padding:74px 0;border-top:1px solid var(--line)}
-  .eyebrow{color:var(--accent);font-weight:700;font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase}
-  .center{text-align:center}.center .eyebrow{display:block}
-  h2{font-size:clamp(27px,3.7vw,38px);font-weight:800;letter-spacing:-.7px;margin:9px 0 12px}
-  .lead{color:var(--muted);max-width:640px;font-size:17px}
-  .center .lead{margin-left:auto;margin-right:auto}
-
-  .grid{display:grid;gap:16px;margin-top:42px}
-  .g3{grid-template-columns:repeat(3,1fr)}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;transition:border-color .15s,transform .15s}
-  .card:hover{border-color:#2b3e66;transform:translateY(-2px)}
-  .card h3{font-size:16.5px;margin-bottom:5px;letter-spacing:-.2px}
-  .card p{color:var(--muted);font-size:14.5px}
-  .ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:21px;margin-bottom:14px}
-
-  .gallery{display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:auto auto;gap:20px;margin-top:42px}
-  .gallery figure{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg2);box-shadow:0 16px 40px rgba(0,0,0,.4)}
-  .gallery img{display:block;width:100%}
-  .gallery figcaption{color:var(--muted);font-size:13.5px;padding:13px 16px;border-top:1px solid var(--line)}
-  .gallery figcaption b{color:var(--txt)}
-  .gallery .g-main{grid-row:1/3}
-  .gallery .g-ios img{height:100%;object-fit:cover;object-position:top}
-
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:42px;counter-reset:s}
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;position:relative}
-  .step::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:22px;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#4ab83c,#6ad65c);color:#06120a;font-weight:800;display:grid;place-items:center;font-size:15px}
-  .step h3{margin:6px 0 5px;font-size:16px}
-  .step p{color:var(--muted);font-size:14.5px}
-  .step code{background:#060a14;color:var(--accent);border-radius:6px;padding:2px 7px;font:12.5px/1.4 var(--font-mono)}
-
-  .final{text-align:center;background:radial-gradient(620px 300px at 50% 120%,rgba(74,184,60,.2),transparent 64%)}
-  .final .cta{justify-content:center}
-  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted);font-size:14px;text-align:center}
-  footer a{color:var(--accent);font-weight:600}
-  code{background:#060a14;border:1px solid var(--line);border-radius:6px;padding:2px 7px;font:13px/1.4 var(--font-mono);color:var(--accent)}
-
-  @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:30px}.g3,.steps{grid-template-columns:1fr}.gallery{grid-template-columns:1fr}.gallery .g-main{grid-row:auto}.nav-links a:not(.btn){display:none}}
-</style>
 </head>
 <body>
-<a class="skip" href="#top"><span class="en">Skip to content</span><span class="fr">Aller au contenu</span><span class="zh">跳至內容</span></a>
-
-<nav><div class="wrap">
-  <a class="brand" href="#top"><span class="logo"><svg width="18" height="18" viewBox="0 0 100 100"><path d="M30 62 C24 50 34 34 50 34 C66 34 76 46 74 58 C72 66 60 70 52 66 C44 62 40 52 46 46" fill="none" stroke="#6ad65c" stroke-width="7" stroke-linecap="round"/><ellipse cx="40" cy="58" rx="17" ry="9" fill="#fff" transform="rotate(-18 40 58)"/><line x1="55" y1="58" x2="66" y2="50" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="66" cy="50" r="4.5" fill="#fff"/></svg></span>StarlinkInfos</a>
-  <div class="nav-links">
-    <a href="#features"><span class="en">Features</span><span class="fr">Fonctions</span><span class="zh">功能</span></a>
-    <a href="#screens"><span class="en">Screens</span><span class="fr">Aperçu</span><span class="zh">畫面</span></a>
-    <a href="#install"><span class="en">Install</span><span class="fr">Installer</span><span class="zh">安裝</span></a>
-    <a href="https://github.com/vincentlauriat/StarlinkInfos">GitHub</a>
-    <div class="langtog" role="group" aria-label="Language / Langue / 語言">
-      <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
-      <button type="button" data-lang="fr" onclick="setLang('fr')">FR</button>
-      <button type="button" data-lang="zh" onclick="setLang('zh')">中文</button>
-    </div>
-    <a class="btn btn-primary btn-sm" href="https://github.com/vincentlauriat/StarlinkInfos/releases/latest"><span class="en">Download</span><span class="fr">Télécharger</span><span class="zh">下載</span></a>
-  </div>
-</div></nav>
-
-<header id="top"><div class="wrap">
-  <div class="hero-grid">
-    <div>
-      <span class="pill"><span class="led"></span>
-        <span class="en">Talks directly to your dish — <b>no cloud, no account</b></span>
-        <span class="fr">Parle directement à votre antenne — <b>sans cloud, sans compte</b></span>
-        <span class="zh">直接與你的天線通訊 —— <b>免雲端、免帳號</b></span>
-      </span>
-      <h1>
-        <span class="en">Your Starlink,<br><span class="grad">at a glance.</span></span>
-        <span class="fr">Votre Starlink,<br><span class="grad">d'un coup d'œil.</span></span>
-        <span class="zh">你的 Starlink，<br><span class="grad">一眼掌握。</span></span>
-      </h1>
-      <p class="sub">
-        <span class="en">A native macOS &amp; iOS app that connects straight to your dish's own local API — live status, latency &amp; throughput history, obstruction map, and one-click reboot/stow. Plus Starlink news, upcoming launches and constellation stats on the side.</span>
-        <span class="fr">Une app native macOS et iOS qui se connecte directement à l'API locale de votre antenne — état en direct, historique de latence et de débit, carte des obstructions, redémarrage ou rangement en un clic. Et à côté, l'actualité Starlink, les prochains lancements et les stats de la constellation.</span>
-        <span class="zh">原生 macOS 與 iOS 應用程式，直接連上天線本身的區域 API——即時狀態、延遲與吞吐量歷史、遮蔽圖，以及一鍵重新啟動或收合。旁邊還有 Starlink 新聞、即將到來的發射與星系數據。</span>
-      </p>
-      <div class="cta">
-        <a class="btn btn-primary" href="https://github.com/vincentlauriat/StarlinkInfos/releases/latest">⬇︎ <span class="en">Download for macOS</span><span class="fr">Télécharger pour macOS</span><span class="zh">下載 macOS 版</span></a>
-        <a class="btn btn-ghost" href="https://github.com/vincentlauriat/StarlinkInfos"><span class="en">View on GitHub</span><span class="fr">Voir sur GitHub</span><span class="zh">在 GitHub 上檢視</span></a>
-      </div>
-      <div class="legend">
-        <span><i style="background:var(--ok);box-shadow:0 0 8px var(--ok)"></i> <span class="en">Online</span><span class="fr">En ligne</span><span class="zh">連線中</span></span>
-        <span><i style="background:var(--warn);box-shadow:0 0 8px var(--warn)"></i> <span class="en">Obstructed</span><span class="fr">Obstruée</span><span class="zh">受遮蔽</span></span>
-        <span><i style="background:var(--down);box-shadow:0 0 8px var(--down)"></i> <span class="en">Unreachable</span><span class="fr">Injoignable</span><span class="zh">無法連線</span></span>
-      </div>
-      <p class="meta">
-        <span class="en"><b>Free &amp; open-source (MIT)</b> · macOS 15+ / iOS 18+ · Signed, notarized &amp; self-updating</span>
-        <span class="fr"><b>Gratuite et open source (MIT)</b> · macOS 15+ / iOS 18+ · Signée, notariée et auto-mise à jour</span>
-        <span class="zh"><b>免費開源（MIT）</b> · macOS 15+ / iOS 18+ · 已簽章、已公證、可自動更新</span>
-      </p>
-    </div>
-    <div class="hero-shot">
-      <img src="screenshots/dashboard.png" alt="StarlinkInfos dashboard showing dish status, latency and throughput charts, and the obstruction map" loading="eager">
-    </div>
-  </div>
+<a class="skip" href="#content"><span class="en">Skip to content</span><span class="fr">Aller au contenu</span><span class="zh">跳至內容</span></a>
+<header class="running"><div class="wrap">
+<a class="back" href="https://vincentlauriat.github.io/#w18"><svg class="arw l" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg><span class="en">Vincent Lauriat</span><span class="fr">Vincent Lauriat</span><span class="zh">Vincent Lauriat</span></a>
+<span class="here"><span class="num">18</span> · StarlinkInfos</span>
+<div class="langs" role="group" aria-label="Language / Langue / 語言"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="fr" aria-pressed="false">FR</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div>
+<a class="gh" href="https://github.com/vincentlauriat/StarlinkInfos">GitHub</a>
 </div></header>
-
-<section id="features"><div class="wrap">
-  <div class="center">
-    <p class="eyebrow"><span class="en">features</span><span class="fr">fonctions</span><span class="zh">功能</span></p>
-    <h2><span class="en">Everything your dish already knows</span><span class="fr">Tout ce que votre antenne sait déjà</span><span class="zh">你的天線早就知道的一切</span></h2>
-    <p class="lead">
-      <span class="en">The dish exposes a detailed local API on its own network — StarlinkInfos just puts it on screen, refreshed every couple of seconds.</span>
-      <span class="fr">L'antenne expose une API locale détaillée sur son propre réseau — StarlinkInfos ne fait que l'afficher, rafraîchie toutes les deux secondes.</span>
-      <span class="zh">天線在自己的網路上開放一組詳盡的區域 API——StarlinkInfos 只是把它顯示出來，每隔幾秒更新一次。</span>
-    </p>
-  </div>
-  <div class="grid g3">
-    <div class="card"><div class="ico" aria-hidden="true">📡</div>
-      <h3><span class="en">Real-time dashboard</span><span class="fr">Tableau de bord en temps réel</span><span class="zh">即時儀表板</span></h3>
-      <p><span class="en">Connection status, uptime, latency, throughput, GPS lock, Ethernet speed and dish tilt — polled live from the dish itself.</span>
-      <span class="fr">État de la connexion, temps de fonctionnement, latence, débit, verrouillage GPS, vitesse Ethernet et inclinaison — interrogés en direct sur l'antenne elle-même.</span>
-      <span class="zh">連線狀態、運行時間、延遲、吞吐量、GPS 定位、乙太網速度與天線傾角——全部即時向天線本身查詢。</span></p></div>
-    <div class="card"><div class="ico" aria-hidden="true">📈</div>
-      <h3><span class="en">Latency &amp; throughput charts</span><span class="fr">Courbes de latence et de débit</span><span class="zh">延遲與吞吐量圖表</span></h3>
-      <p><span class="en">The last 15 minutes of ping and download/upload speed, straight from the dish's own history buffer.</span>
-      <span class="fr">Les 15 dernières minutes de ping et de vitesse descendante/montante, directement issues du tampon d'historique de l'antenne.</span>
-      <span class="zh">最近 15 分鐘的 ping 與上下行速度，直接取自天線本身的歷史緩衝區。</span></p></div>
-    <div class="card"><div class="ico" aria-hidden="true">🛰️</div>
-      <h3><span class="en">Obstruction map</span><span class="fr">Carte des obstructions</span><span class="zh">遮蔽圖</span></h3>
-      <p><span class="en">The exact sky-view SNR grid the dish uses to detect obstructions — rendered as a live radar view.</span>
-      <span class="fr">La grille SNR de vue du ciel que l'antenne utilise pour détecter les obstructions — rendue comme un radar en direct.</span>
-      <span class="zh">天線用來偵測遮蔽的天空視野 SNR 網格——以即時雷達畫面呈現。</span></p></div>
-    <div class="card"><div class="ico" aria-hidden="true">🔁</div>
-      <h3><span class="en">Dish controls</span><span class="fr">Commandes de l'antenne</span><span class="zh">天線控制</span></h3>
-      <p><span class="en">Reboot or stow/unstow the dish in one click, always behind a confirmation — nothing fires by accident.</span>
-      <span class="fr">Redémarrez ou rangez/déployez l'antenne en un clic, toujours derrière une confirmation — rien ne part par accident.</span>
-      <span class="zh">一鍵重新啟動或收合／展開天線，且一律需要確認——不會誤觸。</span></p></div>
-    <div class="card"><div class="ico" aria-hidden="true">📰</div>
-      <h3><span class="en">Starlink news</span><span class="fr">Actualité Starlink</span><span class="zh">Starlink 新聞</span></h3>
-      <p><span class="en">A live feed of Starlink coverage, in French or English depending on your app language.</span>
-      <span class="fr">Un flux en direct de l'actualité Starlink, en français ou en anglais selon la langue de l'app.</span>
-      <span class="zh">Starlink 相關報導的即時訊息流，依應用程式語言以法文或英文顯示。</span></p></div>
-    <div class="card"><div class="ico" aria-hidden="true">🚀</div>
-      <h3><span class="en">Launches &amp; constellation</span><span class="fr">Lancements et constellation</span><span class="zh">發射與星系</span></h3>
-      <p><span class="en">Upcoming Starlink launches with a countdown, plus a live count of satellites currently in orbit.</span>
-      <span class="fr">Les prochains lancements Starlink avec compte à rebours, plus un décompte en direct des satellites en orbite.</span>
-      <span class="zh">即將到來的 Starlink 發射與倒數計時，以及目前在軌衛星的即時數量。</span></p></div>
-    <div class="card wide"><div class="ico" aria-hidden="true">✈️</div>
-      <h3><span class="en">Link monitor <span class="tag">macOS · new in 1.2</span></span><span class="fr">Mesure du lien <span class="tag">macOS · nouveau en 1.2</span></span><span class="zh">連線監測 <span class="tag">macOS · 1.2 新功能</span></span></h3>
-      <p><span class="en">Measures your link even when the dish is out of reach — Starlink Wi-Fi on a plane, for instance. Every 30 seconds: latency and loss to the Internet, latency of the space segment alone, and the ground PoP you exit through. Live view, recorded sessions with CSV export, and an optional auto-start in flight.</span>
-      <span class="fr">Mesure votre lien même quand l'antenne est hors d'atteinte — le Wi-Fi Starlink d'un avion, par exemple. Toutes les 30 secondes : latence et pertes vers Internet, latence du seul segment spatial, et le PoP au sol par lequel vous sortez. Vue en direct, sessions enregistrées avec export CSV, et démarrage automatique en vol en option.</span>
-      <span class="zh">即使無法連上天線也能測量你的連線——例如飛機上的 Starlink Wi-Fi。每 30 秒記錄一次：到網際網路的延遲與封包遺失、僅太空段的延遲，以及你所經由的地面 PoP。提供即時畫面、可匯出 CSV 的錄製工作階段，以及可選的飛行中自動啟動。</span></p></div>
-  </div>
+<main>
+<section class="title"><div class="wrap g12">
+<h1 class="nm long" style="--len:13"><span class="no" aria-label="Work no. 18">18</span><span>StarlinkInfos</span></h1>
+<p class="role"><span class="en">Talks directly to your dish — no cloud, no account</span><span class="fr">Parle directement à votre antenne — sans cloud, sans compte</span><span class="zh">直接與你的天線通訊 —— 免雲端、免帳號</span></p>
+<div class="t-left">
+<p class="thesis"><span class="en">Your Starlink, at a glance.</span><span class="fr">Votre Starlink, d'un coup d'œil.</span><span class="zh">你的 Starlink， 一眼掌握。</span></p>
+<p class='lede'><span class="en">A native macOS &amp; iOS app that connects straight to your dish's own local API — live status, latency &amp; throughput history, obstruction map, and one-click reboot/stow. Plus Starlink news, upcoming launches and constellation stats on the side.</span><span class="fr">Une app native macOS et iOS qui se connecte directement à l'API locale de votre antenne — état en direct, historique de latence et de débit, carte des obstructions, redémarrage ou rangement en un clic. Et à côté, l'actualité Starlink, les prochains lancements et les stats de la constellation.</span><span class="zh">原生 macOS 與 iOS 應用程式，直接連上天線本身的區域 API——即時狀態、延遲與吞吐量歷史、遮蔽圖，以及一鍵重新啟動或收合。旁邊還有 Starlink 新聞、即將到來的發射與星系數據。</span></p>
+<div class="acts"><a class="btn" href="https://github.com/vincentlauriat/StarlinkInfos/releases/latest"><span class="en">Download for macOS</span><span class="fr">Télécharger pour macOS</span><span class="zh">下載 macOS 版</span></a><a class="lnk" href="https://github.com/vincentlauriat/StarlinkInfos"><span class="en">View on GitHub</span><span class="fr">Voir sur GitHub</span><span class="zh">在 GitHub 上檢視</span><svg class="arw" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div>
+<dl class="facts"><div><dt><span class="en">Requires</span><span class="fr">Configuration</span><span class="zh">系統需求</span></dt><dd><span class="en">macOS 15+ / iOS 18+</span><span class="fr">macOS 15+ / iOS 18+</span><span class="zh">macOS 15+ / iOS 18+</span></dd></div><div><dt><span class="en">Distribution</span><span class="fr">Distribution</span><span class="zh">發行</span></dt><dd><span class="en">Signed, notarized &amp; self-updating</span><span class="fr">Signée, notariée et auto-mise à jour</span><span class="zh">已簽章、已公證、可自動更新</span></dd></div><div><dt><span class="en">Licence</span><span class="fr">Licence</span><span class="zh">授權</span></dt><dd><span class="en">Free &amp; open-source (MIT)</span><span class="fr">Gratuite et open source (MIT)</span><span class="zh">免費開源（MIT）</span></dd></div></dl>
+</div>
+<div class="t-right"><figure class="plate ink"><div class="pl"><img src="screenshots/dashboard.png" alt="StarlinkInfos dashboard showing dish status, latency and throughput charts, and the obstruction map" width="1600" height="1120" decoding="async"></div><figcaption><span class="fg"><span class="en">Fig.</span><span class="fr">Fig.</span><span class="zh">圖</span> 1</span><span class="en"><b>Dashboard</b> — status, latency &amp; throughput, obstruction map, dish info and controls, all in one screen.</span><span class="fr"><b>Tableau de bord</b> — état, latence et débit, carte des obstructions, infos et commandes de l'antenne, sur un seul écran.</span><span class="zh"><b>儀表板</b> — 狀態、延遲與吞吐量、遮蔽圖、天線資訊與控制，全在同一畫面。</span></figcaption></figure></div>
 </div></section>
-
-<section id="screens"><div class="wrap">
-  <div class="center">
-    <p class="eyebrow"><span class="en">a look inside</span><span class="fr">un aperçu</span><span class="zh">內部一覽</span></p>
-    <h2><span class="en">See it work</span><span class="fr">Le voir tourner</span><span class="zh">實際運作</span></h2>
-    <p class="lead">
-      <span class="en">One shared codebase, native on macOS and iOS/iPadOS — the same dashboard, wherever you check it from.</span>
-      <span class="fr">Une seule base de code, native sur macOS et iOS/iPadOS — le même tableau de bord, d'où que vous le consultiez.</span>
-      <span class="zh">單一共用程式碼，在 macOS 與 iOS/iPadOS 上皆為原生——不論從哪裡查看，都是同一個儀表板。</span>
-    </p>
-  </div>
-  <div class="gallery">
-    <figure class="g-main">
-      <img src="screenshots/dashboard.png" alt="StarlinkInfos macOS dashboard with live dish status and charts" loading="lazy">
-      <figcaption>
-        <span class="en"><b>Dashboard</b> — status, latency &amp; throughput, obstruction map, dish info and controls, all in one screen.</span>
-        <span class="fr"><b>Tableau de bord</b> — état, latence et débit, carte des obstructions, infos et commandes de l'antenne, sur un seul écran.</span>
-        <span class="zh"><b>儀表板</b> — 狀態、延遲與吞吐量、遮蔽圖、天線資訊與控制，全在同一畫面。</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="screenshots/ios.png" alt="StarlinkInfos running on iPhone showing the same live dashboard" loading="lazy">
-      <figcaption>
-        <span class="en"><b>iOS</b> — the same live data, checked from your phone on the Starlink network.</span>
-        <span class="fr"><b>iOS</b> — les mêmes données en direct, consultées depuis votre téléphone sur le réseau Starlink.</span>
-        <span class="zh"><b>iOS</b> — 同樣的即時數據，在 Starlink 網路上用手機查看。</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="screenshots/obstruction-map.png" alt="Close-up of the StarlinkInfos obstruction map, a blue disc showing clear sky" loading="lazy">
-      <figcaption>
-        <span class="en"><b>Obstruction map</b> — the dish's own sky-view SNR grid, blue where the view is clear.</span>
-        <span class="fr"><b>Carte des obstructions</b> — la grille SNR de l'antenne, bleue là où le ciel est dégagé.</span>
-        <span class="zh"><b>遮蔽圖</b> — 天線本身的天空視野 SNR 網格，視野清晰處顯示為藍色。</span>
-      </figcaption>
-    </figure>
-  </div>
-</div></section>
-
-<section id="install"><div class="wrap">
-  <div class="center">
-    <p class="eyebrow"><span class="en">get started</span><span class="fr">démarrer</span><span class="zh">開始使用</span></p>
-    <h2><span class="en">Up and running in 30 seconds</span><span class="fr">Opérationnel en 30 secondes</span><span class="zh">30 秒內開始使用</span></h2>
-    <p class="lead">
-      <span class="en">Signed, notarized and Hardened-Runtime — it opens without any Gatekeeper warning. Just be on the Starlink network to see live dish data.</span>
-      <span class="fr">Signée, notariée et en Hardened Runtime — elle s'ouvre sans aucun avertissement Gatekeeper. Il suffit d'être sur le réseau Starlink pour voir les données en direct.</span>
-      <span class="zh">已簽章、已公證並啟用 Hardened Runtime——開啟時不會出現任何 Gatekeeper 警告。只要連上 Starlink 網路即可看到即時數據。</span>
-    </p>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <h3><span class="en">Download</span><span class="fr">Télécharger</span><span class="zh">下載</span></h3>
-      <p><span class="en">Grab the latest <code>.dmg</code> from GitHub Releases and mount it.</span>
-      <span class="fr">Récupérez le dernier <code>.dmg</code> depuis GitHub Releases et montez-le.</span>
-      <span class="zh">從 GitHub Releases 取得最新的 <code>.dmg</code> 並掛載。</span></p></div>
-    <div class="step">
-      <h3><span class="en">Install</span><span class="fr">Installer</span><span class="zh">安裝</span></h3>
-      <p><span class="en">Drag <code>StarlinkInfos.app</code> into <code>/Applications</code>.</span>
-      <span class="fr">Glissez <code>StarlinkInfos.app</code> dans <code>/Applications</code>.</span>
-      <span class="zh">將 <code>StarlinkInfos.app</code> 拖入 <code>/Applications</code>。</span></p></div>
-    <div class="step">
-      <h3><span class="en">Launch</span><span class="fr">Lancer</span><span class="zh">啟動</span></h3>
-      <p><span class="en">Open it while connected to your Starlink Wi-Fi. Requires macOS 15 or later.</span>
-      <span class="fr">Ouvrez-la en étant connecté à votre Wi-Fi Starlink. Nécessite macOS 15 ou ultérieur.</span>
-      <span class="zh">在連上 Starlink Wi-Fi 時開啟。需要 macOS 15 或以上版本。</span></p></div>
-  </div>
-</div></section>
-
-<section class="final"><div class="wrap">
-  <p class="eyebrow"><span class="en">ready?</span><span class="fr">prêt ?</span><span class="zh">準備好了嗎？</span></p>
-  <h2><span class="en">Stop guessing why the connection dropped</span><span class="fr">Arrêtez de deviner pourquoi la connexion a lâché</span><span class="zh">別再猜連線為什麼斷了</span></h2>
-  <p class="lead" style="margin:0 auto 6px">
-    <span class="en">Free, open-source and native. macOS 15+ / iOS 18+.</span>
-    <span class="fr">Gratuite, open source et native. macOS 15+ / iOS 18+.</span>
-    <span class="zh">免費、開源、原生。macOS 15+ / iOS 18+。</span>
-  </p>
-  <div class="cta">
-    <a class="btn btn-primary" href="https://github.com/vincentlauriat/StarlinkInfos/releases/latest">⬇︎ <span class="en">Download for macOS</span><span class="fr">Télécharger pour macOS</span><span class="zh">下載 macOS 版</span></a>
-    <a class="btn btn-ghost" href="https://github.com/vincentlauriat/StarlinkInfos#readme"><span class="en">Read the docs</span><span class="fr">Lire la doc</span><span class="zh">閱讀說明文件</span></a>
-  </div>
-</div></section>
-
-<footer><div class="wrap">
-  StarlinkInfos · <span class="en">MIT License</span><span class="fr">Licence MIT</span><span class="zh">MIT 授權</span> · © 2026 Vincent Lauriat ·
-  <a href="https://github.com/vincentlauriat/StarlinkInfos">github.com/vincentlauriat/StarlinkInfos</a>
-  · <a href="https://vincentlauriat.github.io">vincentlauriat.github.io</a>
-</div></footer>
-
-<script>
-  /* Trois langues. La classe posée sur <body> pilote l'affichage (les règles
-     vivent dans base.css), et l'attribut lang de <html> suit — sans lui, un
-     lecteur d'écran lirait le français avec une voix anglaise.
-
-     zh-Hant et non zh : sur un système configuré en chinois simplifié, un
-     simple `zh` laisse le navigateur choisir une fonte Han simplifiée, qui
-     rend certains caractères traditionnels dans la mauvaise forme. */
-  var LANG_TAG={en:'en',fr:'fr',zh:'zh-Hant'};
-  function setLang(l){
-    if(!LANG_TAG[l]) l='en';
-    document.body.classList.remove('lang-en','lang-fr','lang-zh');
-    document.body.classList.add('lang-'+l);
-    document.documentElement.lang=LANG_TAG[l];
-    /* On boucle sur les boutons au lieu de les nommer un par un : ajouter une
-       4ᵉ langue ne demandera alors aucune retouche de ce script. */
-    document.querySelectorAll('.langtog button').forEach(function(b){
-      var on=b.dataset.lang===l;
-      b.classList.toggle('on',on);
-      b.setAttribute('aria-pressed',on?'true':'false');
-    });
-    try{localStorage.setItem('vl-lang',l)}catch(e){}
-  }
-  (function(){
-    var saved;try{saved=localStorage.getItem('vl-lang')}catch(e){}
-    var n=(navigator.language||'en').slice(0,2).toLowerCase();
-    /* Le traditionnel est servi à tout visiteur sinophone, y compris zh-CN :
-       c'est la seule variante chinoise disponible, et la renvoyer vaut mieux
-       que de rabattre ce visiteur sur l'anglais. */
-    setLang(saved||(n==='zh'?'zh':(n==='fr'?'fr':'en')));
-  })();
-</script>
+<section class="opener" id="content"><div class="wrap"><div class="op-grid"><div class="numeral" aria-hidden="true">18</div><div class="op-text"><h2><span class="en">Everything your dish already knows</span><span class="fr">Tout ce que votre antenne sait déjà</span><span class="zh">你的天線早就知道的一切</span></h2><p><span class="en">The dish exposes a detailed local API on its own network — StarlinkInfos just puts it on screen, refreshed every couple of seconds.</span><span class="fr">L'antenne expose une API locale détaillée sur son propre réseau — StarlinkInfos ne fait que l'afficher, rafraîchie toutes les deux secondes.</span><span class="zh">天線在自己的網路上開放一組詳盡的區域 API——StarlinkInfos 只是把它顯示出來，每隔幾秒更新一次。</span></p></div></div></div></section>
+<section class="chapter"><div class="wrap"><ul class="specs"><li><h3><span class="en">Real-time dashboard</span><span class="fr">Tableau de bord en temps réel</span><span class="zh">即時儀表板</span></h3><div><p><span class="en">Connection status, uptime, latency, throughput, GPS lock, Ethernet speed and dish tilt — polled live from the dish itself.</span><span class="fr">État de la connexion, temps de fonctionnement, latence, débit, verrouillage GPS, vitesse Ethernet et inclinaison — interrogés en direct sur l'antenne elle-même.</span><span class="zh">連線狀態、運行時間、延遲、吞吐量、GPS 定位、乙太網速度與天線傾角——全部即時向天線本身查詢。</span></p></div></li><li><h3><span class="en">Latency &amp; throughput charts</span><span class="fr">Courbes de latence et de débit</span><span class="zh">延遲與吞吐量圖表</span></h3><div><p><span class="en">The last 15 minutes of ping and download/upload speed, straight from the dish's own history buffer.</span><span class="fr">Les 15 dernières minutes de ping et de vitesse descendante/montante, directement issues du tampon d'historique de l'antenne.</span><span class="zh">最近 15 分鐘的 ping 與上下行速度，直接取自天線本身的歷史緩衝區。</span></p></div></li><li><h3><span class="en">Obstruction map</span><span class="fr">Carte des obstructions</span><span class="zh">遮蔽圖</span></h3><div><p><span class="en">The exact sky-view SNR grid the dish uses to detect obstructions — rendered as a live radar view.</span><span class="fr">La grille SNR de vue du ciel que l'antenne utilise pour détecter les obstructions — rendue comme un radar en direct.</span><span class="zh">天線用來偵測遮蔽的天空視野 SNR 網格——以即時雷達畫面呈現。</span></p></div></li><li><h3><span class="en">Dish controls</span><span class="fr">Commandes de l'antenne</span><span class="zh">天線控制</span></h3><div><p><span class="en">Reboot or stow/unstow the dish in one click, always behind a confirmation — nothing fires by accident.</span><span class="fr">Redémarrez ou rangez/déployez l'antenne en un clic, toujours derrière une confirmation — rien ne part par accident.</span><span class="zh">一鍵重新啟動或收合／展開天線，且一律需要確認——不會誤觸。</span></p></div></li><li><h3><span class="en">Starlink news</span><span class="fr">Actualité Starlink</span><span class="zh">Starlink 新聞</span></h3><div><p><span class="en">A live feed of Starlink coverage, in French or English depending on your app language.</span><span class="fr">Un flux en direct de l'actualité Starlink, en français ou en anglais selon la langue de l'app.</span><span class="zh">Starlink 相關報導的即時訊息流，依應用程式語言以法文或英文顯示。</span></p></div></li><li><h3><span class="en">Launches &amp; constellation</span><span class="fr">Lancements et constellation</span><span class="zh">發射與星系</span></h3><div><p><span class="en">Upcoming Starlink launches with a countdown, plus a live count of satellites currently in orbit.</span><span class="fr">Les prochains lancements Starlink avec compte à rebours, plus un décompte en direct des satellites en orbite.</span><span class="zh">即將到來的 Starlink 發射與倒數計時，以及目前在軌衛星的即時數量。</span></p></div></li><li><h3><span class="en">Link monitor (macOS · new in 1.2)</span><span class="fr">Mesure du lien (macOS · nouveau en 1.2)</span><span class="zh">連線監測 (macOS · 1.2 新功能)</span></h3><div><p><span class="en">Measures your link even when the dish is out of reach — Starlink Wi-Fi on a plane, for instance. Every 30 seconds: latency and loss to the Internet, latency of the space segment alone, and the ground PoP you exit through. Live view, recorded sessions with CSV export, and an optional auto-start in flight.</span><span class="fr">Mesure votre lien même quand l'antenne est hors d'atteinte — le Wi-Fi Starlink d'un avion, par exemple. Toutes les 30 secondes : latence et pertes vers Internet, latence du seul segment spatial, et le PoP au sol par lequel vous sortez. Vue en direct, sessions enregistrées avec export CSV, et démarrage automatique en vol en option.</span><span class="zh">即使無法連上天線也能測量你的連線——例如飛機上的 Starlink Wi-Fi。每 30 秒記錄一次：到網際網路的延遲與封包遺失、僅太空段的延遲，以及你所經由的地面 PoP。提供即時畫面、可匯出 CSV 的錄製工作階段，以及可選的飛行中自動啟動。</span></p></div></li></ul></div></section>
+<section class="chapter" id="screens"><div class="wrap g12"><div class="ch-head"><h2><span class="en">See it work</span><span class="fr">Le voir tourner</span><span class="zh">實際運作</span></h2><p><span class="en">One shared codebase, native on macOS and iOS/iPadOS — the same dashboard, wherever you check it from.</span><span class="fr">Une seule base de code, native sur macOS et iOS/iPadOS — le même tableau de bord, d'où que vous le consultiez.</span><span class="zh">單一共用程式碼，在 macOS 與 iOS/iPadOS 上皆為原生——不論從哪裡查看，都是同一個儀表板。</span></p></div><div class="ch-body"><div class="plates"><figure class="plate"><div class="pl"><img src="screenshots/ios.png" alt="StarlinkInfos running on iPhone showing the same live dashboard" width="322" height="700" loading="lazy" decoding="async"></div><figcaption><span class="fg"><span class="en">Fig.</span><span class="fr">Fig.</span><span class="zh">圖</span> 2</span><span class="en"><b>iOS</b> — the same live data, checked from your phone on the Starlink network.</span><span class="fr"><b>iOS</b> — les mêmes données en direct, consultées depuis votre téléphone sur le réseau Starlink.</span><span class="zh"><b>iOS</b> — 同樣的即時數據，在 Starlink 網路上用手機查看。</span></figcaption></figure><figure class="plate ink"><div class="pl"><img src="screenshots/obstruction-map.png" alt="Close-up of the StarlinkInfos obstruction map, a blue disc showing clear sky" width="900" height="651" loading="lazy" decoding="async"></div><figcaption><span class="fg"><span class="en">Fig.</span><span class="fr">Fig.</span><span class="zh">圖</span> 3</span><span class="en"><b>Obstruction map</b> — the dish's own sky-view SNR grid, blue where the view is clear.</span><span class="fr"><b>Carte des obstructions</b> — la grille SNR de l'antenne, bleue là où le ciel est dégagé.</span><span class="zh"><b>遮蔽圖</b> — 天線本身的天空視野 SNR 網格，視野清晰處顯示為藍色。</span></figcaption></figure></div></div></div></section><section class="chapter" id="install"><div class="wrap g12"><div class="ch-head"><h2><span class="en">Up and running in 30 seconds</span><span class="fr">Opérationnel en 30 secondes</span><span class="zh">30 秒內開始使用</span></h2><p><span class="en">Signed, notarized and Hardened-Runtime — it opens without any Gatekeeper warning. Just be on the Starlink network to see live dish data.</span><span class="fr">Signée, notariée et en Hardened Runtime — elle s'ouvre sans aucun avertissement Gatekeeper. Il suffit d'être sur le réseau Starlink pour voir les données en direct.</span><span class="zh">已簽章、已公證並啟用 Hardened Runtime——開啟時不會出現任何 Gatekeeper 警告。只要連上 Starlink 網路即可看到即時數據。</span></p></div><div class="ch-body"><ol class="steps"><li><p><span class="en"><b>Download.</b> Grab the latest <code>.dmg</code> from GitHub Releases and mount it.</span><span class="fr"><b>Télécharger.</b> Récupérez le dernier <code>.dmg</code> depuis GitHub Releases et montez-le.</span><span class="zh"><b>下載。</b> 從 GitHub Releases 取得最新的 <code>.dmg</code> 並掛載。</span></p></li><li><p><span class="en"><b>Install.</b> Drag <code>StarlinkInfos.app</code> into <code>/Applications</code>.</span><span class="fr"><b>Installer.</b> Glissez <code>StarlinkInfos.app</code> dans <code>/Applications</code>.</span><span class="zh"><b>安裝。</b> 將 <code>StarlinkInfos.app</code> 拖入 <code>/Applications</code>。</span></p></li><li><p><span class="en"><b>Launch.</b> Open it while connected to your Starlink Wi-Fi. Requires macOS 15 or later.</span><span class="fr"><b>Lancer.</b> Ouvrez-la en étant connecté à votre Wi-Fi Starlink. Nécessite macOS 15 ou ultérieur.</span><span class="zh"><b>啟動。</b> 在連上 Starlink Wi-Fi 時開啟。需要 macOS 15 或以上版本。</span></p></li></ol></div></div></section>
+<section class="close"><div class="wrap g12"><h2><span class="en">Stop guessing why the connection dropped</span><span class="fr">Arrêtez de deviner pourquoi la connexion a lâché</span><span class="zh">別再猜連線為什麼斷了</span></h2><div class="c-r"><p><span class="en">Free, open-source and native. macOS 15+ / iOS 18+.</span><span class="fr">Gratuite, open source et native. macOS 15+ / iOS 18+.</span><span class="zh">免費、開源、原生。macOS 15+ / iOS 18+。</span></p><div class="acts"><a class="btn" href="https://github.com/vincentlauriat/StarlinkInfos/releases/latest"><span class="en">Download for macOS</span><span class="fr">Télécharger pour macOS</span><span class="zh">下載 macOS 版</span></a><a class="lnk" href="https://github.com/vincentlauriat/StarlinkInfos#readme"><span class="en">Read the docs</span><span class="fr">Lire la doc</span><span class="zh">閱讀說明文件</span><svg class="arw" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div></div></div></section>
+</main>
+<footer class="colophon"><div class="wrap g12"><div class="c1"><h2>StarlinkInfos</h2><p><span class="en">Work no.</span><span class="fr">Réalisation n°</span><span class="zh">作品編號</span> <span class="num">18</span> <span class="en">in the works of Vincent Lauriat</span><span class="fr">dans les réalisations de Vincent Lauriat</span><span class="zh">收錄於 Vincent Lauriat 作品集</span>.</p><p><a href="https://vincentlauriat.github.io/#w18"><span class="en">All works</span><span class="fr">Toutes les réalisations</span><span class="zh">全部作品</span></a></p></div><div class="c2"><h2><span class="en">Source</span><span class="fr">Source</span><span class="zh">原始碼</span></h2><p><a href="https://github.com/vincentlauriat/StarlinkInfos">github.com/vincentlauriat/StarlinkInfos</a></p><p><span class="en">MIT License</span><span class="fr">Licence MIT</span><span class="zh">MIT 授權</span> · © 2026 Vincent Lauriat</p></div><div class="c3"><h2><span class="en">About this page</span><span class="fr">À propos de cette page</span><span class="zh">關於本頁</span></h2><p><span class="en">Set in Schibsted Grotesk, on the grid of the book it belongs to.</span><span class="fr">Composée en Schibsted Grotesk, sur la grille du livre auquel elle appartient.</span><span class="zh">以 Schibsted Grotesk 排版，沿用其所屬作品集的網格。</span></p></div></div></footer>
+<script src="/assets/monograph/v1/monograph.js"></script>
 </body>
 </html>

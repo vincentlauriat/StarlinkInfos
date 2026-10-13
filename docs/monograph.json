@@ -1,0 +1,307 @@
+{
+  "name": "StarlinkInfos",
+  "no": "18",
+  "repo": "vincentlauriat/StarlinkInfos",
+  "url": "https://vincentlauriat.github.io/StarlinkInfos/",
+  "accent": "#6ad65c",
+  "meta": {
+    "title": "StarlinkInfos — Your Starlink connection, at a glance",
+    "description": "A native macOS & iOS app that talks directly to your Starlink dish's local API: real-time status, latency & throughput charts, obstruction map, reboot/stow controls — plus Starlink news, upcoming launches and constellation stats. Free & open-source (MIT), signed & notarized.",
+    "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b1224'/%3E%3Cpath d='M30 62 C24 50 34 34 50 34 C66 34 76 46 74 58 C72 66 60 70 52 66 C44 62 40 52 46 46' fill='none' stroke='%236ad65c' stroke-width='5' stroke-linecap='round'/%3E%3Cellipse cx='40' cy='58' rx='17' ry='9' fill='white' transform='rotate(-18 40 58)'/%3E%3Cline x1='55' y1='58' x2='66' y2='50' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='66' cy='50' r='4' fill='white'/%3E%3C/svg%3E",
+    "og_image": "https://raw.githubusercontent.com/vincentlauriat/StarlinkInfos/master/docs/screenshots/dashboard.png"
+  },
+  "role": {
+    "en": "Talks directly to your dish — no cloud, no account",
+    "fr": "Parle directement à votre antenne — sans cloud, sans compte",
+    "zh": "直接與你的天線通訊 —— 免雲端、免帳號"
+  },
+  "thesis": {
+    "en": "Your Starlink, at a glance.",
+    "fr": "Votre Starlink, d'un coup d'œil.",
+    "zh": "你的 Starlink， 一眼掌握。"
+  },
+  "lede": {
+    "en": "A native macOS &amp; iOS app that connects straight to your dish's own local API — live status, latency &amp; throughput history, obstruction map, and one-click reboot/stow. Plus Starlink news, upcoming launches and constellation stats on the side.",
+    "fr": "Une app native macOS et iOS qui se connecte directement à l'API locale de votre antenne — état en direct, historique de latence et de débit, carte des obstructions, redémarrage ou rangement en un clic. Et à côté, l'actualité Starlink, les prochains lancements et les stats de la constellation.",
+    "zh": "原生 macOS 與 iOS 應用程式，直接連上天線本身的區域 API——即時狀態、延遲與吞吐量歷史、遮蔽圖，以及一鍵重新啟動或收合。旁邊還有 Starlink 新聞、即將到來的發射與星系數據。"
+  },
+  "actions": [
+    {
+      "primary": true,
+      "href": "https://github.com/vincentlauriat/StarlinkInfos/releases/latest",
+      "label": {
+        "en": "Download for macOS",
+        "fr": "Télécharger pour macOS",
+        "zh": "下載 macOS 版"
+      }
+    },
+    {
+      "href": "https://github.com/vincentlauriat/StarlinkInfos",
+      "label": {
+        "en": "View on GitHub",
+        "fr": "Voir sur GitHub",
+        "zh": "在 GitHub 上檢視"
+      }
+    }
+  ],
+  "facts": [
+    {
+      "k": {
+        "en": "Requires",
+        "fr": "Configuration",
+        "zh": "系統需求"
+      },
+      "v": {
+        "en": "macOS 15+ / iOS 18+",
+        "fr": "macOS 15+ / iOS 18+",
+        "zh": "macOS 15+ / iOS 18+"
+      }
+    },
+    {
+      "k": {
+        "en": "Distribution",
+        "fr": "Distribution",
+        "zh": "發行"
+      },
+      "v": {
+        "en": "Signed, notarized &amp; self-updating",
+        "fr": "Signée, notariée et auto-mise à jour",
+        "zh": "已簽章、已公證、可自動更新"
+      }
+    },
+    {
+      "k": {
+        "en": "Licence",
+        "fr": "Licence",
+        "zh": "授權"
+      },
+      "v": {
+        "en": "Free &amp; open-source (MIT)",
+        "fr": "Gratuite et open source (MIT)",
+        "zh": "免費開源（MIT）"
+      }
+    }
+  ],
+  "hero": {
+    "src": "screenshots/dashboard.png",
+    "w": 1600,
+    "h": 1120,
+    "dark": true,
+    "alt": "StarlinkInfos dashboard showing dish status, latency and throughput charts, and the obstruction map",
+    "caption": {
+      "en": "<b>Dashboard</b> — status, latency &amp; throughput, obstruction map, dish info and controls, all in one screen.",
+      "fr": "<b>Tableau de bord</b> — état, latence et débit, carte des obstructions, infos et commandes de l'antenne, sur un seul écran.",
+      "zh": "<b>儀表板</b> — 狀態、延遲與吞吐量、遮蔽圖、天線資訊與控制，全在同一畫面。"
+    }
+  },
+  "opener": {
+    "h": {
+      "en": "Everything your dish already knows",
+      "fr": "Tout ce que votre antenne sait déjà",
+      "zh": "你的天線早就知道的一切"
+    },
+    "p": {
+      "en": "The dish exposes a detailed local API on its own network — StarlinkInfos just puts it on screen, refreshed every couple of seconds.",
+      "fr": "L'antenne expose une API locale détaillée sur son propre réseau — StarlinkInfos ne fait que l'afficher, rafraîchie toutes les deux secondes.",
+      "zh": "天線在自己的網路上開放一組詳盡的區域 API——StarlinkInfos 只是把它顯示出來，每隔幾秒更新一次。"
+    }
+  },
+  "features": [
+    {
+      "h": {
+        "en": "Real-time dashboard",
+        "fr": "Tableau de bord en temps réel",
+        "zh": "即時儀表板"
+      },
+      "p": {
+        "en": "Connection status, uptime, latency, throughput, GPS lock, Ethernet speed and dish tilt — polled live from the dish itself.",
+        "fr": "État de la connexion, temps de fonctionnement, latence, débit, verrouillage GPS, vitesse Ethernet et inclinaison — interrogés en direct sur l'antenne elle-même.",
+        "zh": "連線狀態、運行時間、延遲、吞吐量、GPS 定位、乙太網速度與天線傾角——全部即時向天線本身查詢。"
+      }
+    },
+    {
+      "h": {
+        "en": "Latency &amp; throughput charts",
+        "fr": "Courbes de latence et de débit",
+        "zh": "延遲與吞吐量圖表"
+      },
+      "p": {
+        "en": "The last 15 minutes of ping and download/upload speed, straight from the dish's own history buffer.",
+        "fr": "Les 15 dernières minutes de ping et de vitesse descendante/montante, directement issues du tampon d'historique de l'antenne.",
+        "zh": "最近 15 分鐘的 ping 與上下行速度，直接取自天線本身的歷史緩衝區。"
+      }
+    },
+    {
+      "h": {
+        "en": "Obstruction map",
+        "fr": "Carte des obstructions",
+        "zh": "遮蔽圖"
+      },
+      "p": {
+        "en": "The exact sky-view SNR grid the dish uses to detect obstructions — rendered as a live radar view.",
+        "fr": "La grille SNR de vue du ciel que l'antenne utilise pour détecter les obstructions — rendue comme un radar en direct.",
+        "zh": "天線用來偵測遮蔽的天空視野 SNR 網格——以即時雷達畫面呈現。"
+      }
+    },
+    {
+      "h": {
+        "en": "Dish controls",
+        "fr": "Commandes de l'antenne",
+        "zh": "天線控制"
+      },
+      "p": {
+        "en": "Reboot or stow/unstow the dish in one click, always behind a confirmation — nothing fires by accident.",
+        "fr": "Redémarrez ou rangez/déployez l'antenne en un clic, toujours derrière une confirmation — rien ne part par accident.",
+        "zh": "一鍵重新啟動或收合／展開天線，且一律需要確認——不會誤觸。"
+      }
+    },
+    {
+      "h": {
+        "en": "Starlink news",
+        "fr": "Actualité Starlink",
+        "zh": "Starlink 新聞"
+      },
+      "p": {
+        "en": "A live feed of Starlink coverage, in French or English depending on your app language.",
+        "fr": "Un flux en direct de l'actualité Starlink, en français ou en anglais selon la langue de l'app.",
+        "zh": "Starlink 相關報導的即時訊息流，依應用程式語言以法文或英文顯示。"
+      }
+    },
+    {
+      "h": {
+        "en": "Launches &amp; constellation",
+        "fr": "Lancements et constellation",
+        "zh": "發射與星系"
+      },
+      "p": {
+        "en": "Upcoming Starlink launches with a countdown, plus a live count of satellites currently in orbit.",
+        "fr": "Les prochains lancements Starlink avec compte à rebours, plus un décompte en direct des satellites en orbite.",
+        "zh": "即將到來的 Starlink 發射與倒數計時，以及目前在軌衛星的即時數量。"
+      }
+    },
+    {
+      "h": {
+        "en": "Link monitor (macOS · new in 1.2)",
+        "fr": "Mesure du lien (macOS · nouveau en 1.2)",
+        "zh": "連線監測 (macOS · 1.2 新功能)"
+      },
+      "p": {
+        "en": "Measures your link even when the dish is out of reach — Starlink Wi-Fi on a plane, for instance. Every 30 seconds: latency and loss to the Internet, latency of the space segment alone, and the ground PoP you exit through. Live view, recorded sessions with CSV export, and an optional auto-start in flight.",
+        "fr": "Mesure votre lien même quand l'antenne est hors d'atteinte — le Wi-Fi Starlink d'un avion, par exemple. Toutes les 30 secondes : latence et pertes vers Internet, latence du seul segment spatial, et le PoP au sol par lequel vous sortez. Vue en direct, sessions enregistrées avec export CSV, et démarrage automatique en vol en option.",
+        "zh": "即使無法連上天線也能測量你的連線——例如飛機上的 Starlink Wi-Fi。每 30 秒記錄一次：到網際網路的延遲與封包遺失、僅太空段的延遲，以及你所經由的地面 PoP。提供即時畫面、可匯出 CSV 的錄製工作階段，以及可選的飛行中自動啟動。"
+      }
+    }
+  ],
+  "chapters": [
+    {
+      "id": "screens",
+      "h": {
+        "en": "See it work",
+        "fr": "Le voir tourner",
+        "zh": "實際運作"
+      },
+      "p": {
+        "en": "One shared codebase, native on macOS and iOS/iPadOS — the same dashboard, wherever you check it from.",
+        "fr": "Une seule base de code, native sur macOS et iOS/iPadOS — le même tableau de bord, d'où que vous le consultiez.",
+        "zh": "單一共用程式碼，在 macOS 與 iOS/iPadOS 上皆為原生——不論從哪裡查看，都是同一個儀表板。"
+      },
+      "blocks": [
+        {
+          "type": "plates",
+          "items": [
+            {
+              "src": "screenshots/ios.png",
+              "w": 322,
+              "h": 700,
+              "alt": "StarlinkInfos running on iPhone showing the same live dashboard",
+              "caption": {
+                "en": "<b>iOS</b> — the same live data, checked from your phone on the Starlink network.",
+                "fr": "<b>iOS</b> — les mêmes données en direct, consultées depuis votre téléphone sur le réseau Starlink.",
+                "zh": "<b>iOS</b> — 同樣的即時數據，在 Starlink 網路上用手機查看。"
+              }
+            },
+            {
+              "src": "screenshots/obstruction-map.png",
+              "w": 900,
+              "h": 651,
+              "dark": true,
+              "alt": "Close-up of the StarlinkInfos obstruction map, a blue disc showing clear sky",
+              "caption": {
+                "en": "<b>Obstruction map</b> — the dish's own sky-view SNR grid, blue where the view is clear.",
+                "fr": "<b>Carte des obstructions</b> — la grille SNR de l'antenne, bleue là où le ciel est dégagé.",
+                "zh": "<b>遮蔽圖</b> — 天線本身的天空視野 SNR 網格，視野清晰處顯示為藍色。"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "h": {
+        "en": "Up and running in 30 seconds",
+        "fr": "Opérationnel en 30 secondes",
+        "zh": "30 秒內開始使用"
+      },
+      "p": {
+        "en": "Signed, notarized and Hardened-Runtime — it opens without any Gatekeeper warning. Just be on the Starlink network to see live dish data.",
+        "fr": "Signée, notariée et en Hardened Runtime — elle s'ouvre sans aucun avertissement Gatekeeper. Il suffit d'être sur le réseau Starlink pour voir les données en direct.",
+        "zh": "已簽章、已公證並啟用 Hardened Runtime——開啟時不會出現任何 Gatekeeper 警告。只要連上 Starlink 網路即可看到即時數據。"
+      },
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            {
+              "en": "<b>Download.</b> Grab the latest <code>.dmg</code> from GitHub Releases and mount it.",
+              "fr": "<b>Télécharger.</b> Récupérez le dernier <code>.dmg</code> depuis GitHub Releases et montez-le.",
+              "zh": "<b>下載。</b> 從 GitHub Releases 取得最新的 <code>.dmg</code> 並掛載。"
+            },
+            {
+              "en": "<b>Install.</b> Drag <code>StarlinkInfos.app</code> into <code>/Applications</code>.",
+              "fr": "<b>Installer.</b> Glissez <code>StarlinkInfos.app</code> dans <code>/Applications</code>.",
+              "zh": "<b>安裝。</b> 將 <code>StarlinkInfos.app</code> 拖入 <code>/Applications</code>。"
+            },
+            {
+              "en": "<b>Launch.</b> Open it while connected to your Starlink Wi-Fi. Requires macOS 15 or later.",
+              "fr": "<b>Lancer.</b> Ouvrez-la en étant connecté à votre Wi-Fi Starlink. Nécessite macOS 15 ou ultérieur.",
+              "zh": "<b>啟動。</b> 在連上 Starlink Wi-Fi 時開啟。需要 macOS 15 或以上版本。"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "close": {
+    "h": {
+      "en": "Stop guessing why the connection dropped",
+      "fr": "Arrêtez de deviner pourquoi la connexion a lâché",
+      "zh": "別再猜連線為什麼斷了"
+    },
+    "p": {
+      "en": "Free, open-source and native. macOS 15+ / iOS 18+.",
+      "fr": "Gratuite, open source et native. macOS 15+ / iOS 18+.",
+      "zh": "免費、開源、原生。macOS 15+ / iOS 18+。"
+    },
+    "actions": [
+      {
+        "primary": true,
+        "href": "https://github.com/vincentlauriat/StarlinkInfos/releases/latest",
+        "label": {
+          "en": "Download for macOS",
+          "fr": "Télécharger pour macOS",
+          "zh": "下載 macOS 版"
+        }
+      },
+      {
+        "href": "https://github.com/vincentlauriat/StarlinkInfos#readme",
+        "label": {
+          "en": "Read the docs",
+          "fr": "Lire la doc",
+          "zh": "閱讀說明文件"
+        }
+      }
+    ]
+  },
+  "colophon": {}
+}
